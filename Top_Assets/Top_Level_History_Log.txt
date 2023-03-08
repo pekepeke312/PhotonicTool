@@ -1,0 +1,4 @@
+--Update History Log--
+20 Nov, 2021: Created a top level history log structure
+20 Nov, 2021: To support other dash program, Top-Level Tap system was implemented
+17 Jan, 2022: Added os.system('cmd /c "net user administrator /active:yes"') line to activate drag and drop to administrator account

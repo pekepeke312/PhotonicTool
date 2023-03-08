@@ -1,0 +1,5 @@
+--Update History Log--
+6 Oct 2022: Made a first draft version
+24 Feb 2023: Revised PartSearchTool.py to accept multiple computer case
+26 Feb 2023: Added Digikey web page opener with Manufacturer PN
+8 Mar 2023: Added Parameter Search function

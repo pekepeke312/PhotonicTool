@@ -1,0 +1,11 @@
+--- Loading PartInformation File ---
+Loading from C:\Users\IsaoYoneda\Perforce\iyoneda\referenceTechLibDepot\Part Information\Part Number Tracking.xlsx" started
+Loading the all address of Database files Completed in 0.0147s
+Loading  Completed in 8.03s
+Making Address files table Completed in 0.0421s
+--- Making Table, [Class Code = ] ---
+--- Loading PartInformation File ---
+Loading from C:\Users\IsaoYoneda\Perforce\iyoneda\referenceTechLibDepot\Part Information\Part Number Tracking.xlsx" started
+Loading the all address of Database files Completed in 0.0146s
+Loading  Completed in 8.01s
+Making Address files table Completed in 0.003s

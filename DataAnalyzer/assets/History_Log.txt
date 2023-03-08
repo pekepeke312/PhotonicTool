@@ -1,0 +1,26 @@
+--Update History Log--
+4  May 2021: Added Server Killing program
+7  May 2021: Added Log Viewer 
+17 May 2021: Added API from Mouser Function
+18 May 2021: Added Scraping from Digikey Web page Function
+22 May 2021: Setting update for bat file operation
+2  Oct 2021: Corrected FFT Amplitude miscalculation
+3  Oct 2021: Added Revision History Function
+28 Oct 2021: Supported a path which include white space.
+6  Nov 2021: Changed Dash library of dcc and html to support Dash 2.0.0 version
+7  Nov 2021: Restructured files to support future functions
+17 Nov 2021: file location of server, kill_server and TextWriter were changed
+17 Nov 2021: SpectrumAnalyzer.py, Voltage view of Spectrum Analyzer Function added unit
+18 Nov 2021: SpectrumAnalyzer.py, Frequency view of Spectrum Analyzer Function added auto switching unit (10000kHz -> 10MHz)
+18 Nov 2021: Digikey_WebScraping.py, Update parameter check algorithm
+18 Nov 2021: API_Mouser, Update Rating, Dielectric and Operating Temp dictionary key
+21 Nov 2021: SpectrumAnalyzer.py, Hovertext and Amplitude calculation were revised to match with trace unit of Voltage or Ampere
+2  Feb 2022: Fixed a bug of Add_Desimal_Unit() in Smith Class
+21 Mar 2022: Digikey_WebScraping.py, Change the default currency from Pound to CAD
+3  Jul 2022: Added MSO64 oscilloscope data format
+16 Sep 2022: Added SDS5104X oscilloscope data format
+16 Sep 2022: Added SDS5104X oscilloscope data format
+11 Feb 2023: Updated Digikey_WebScraping.py to fix 403 error
+14 Feb 2023: Added Addtional Sleep Time counter for a safety in Digikey_WebScraping.py
+17 Feb 2023: Limited history log numbers from all to 6.
+25 Feb 2023: Added Digikey and Mouser Stock numbers in BOM check tool
