@@ -64,6 +64,9 @@ def create_layout(app):
 					editable=True,
 					page_action='native',
 					filter_action='native',
+					filter_options={
+						'case': 'insensitive',
+					},
 
 					sort_action='custom',
 					sort_mode='single',

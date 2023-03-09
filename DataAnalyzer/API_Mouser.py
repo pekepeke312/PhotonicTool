@@ -541,8 +541,9 @@ class API_Mouser():
 if __name__ == "__main__":
 
     apikey=os.environ['MOUSER_API']
+    apikey="5931c47c-bd17-4749-9c89-c9d73b9eba00" #Ekta's
 
-    TEST =4
+    TEST =1
     if TEST == 1: # Part from text
             PartNumber = "ERJ-3GEYJ390V"
             Mouser = API_Mouser(PN=PartNumber, APIKEY=apikey)

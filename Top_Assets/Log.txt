@@ -1,3 +1,6 @@
 --- Loading PartInformation File ---
 Loading from C:\Users\IsaoYoneda\Perforce\iyoneda\referenceTechLibDepot\Part Information\Part Number Tracking.xlsx" started
-Loading the all address of Database files Completed in 0.0254s
+Loading the all address of Database files Completed in 0.0245s
+Loading  Completed in 7.84s
+Making Address files table Completed in 0.056s
+--- Making Table, [Class Code = ] ---
