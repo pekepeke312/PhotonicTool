@@ -577,7 +577,7 @@ class SpectrumAnalyzer:
 
 	def StyleUpdate(self):
 		self.Fig_Plotly.update_layout(
-			title= "Waveform Check Result of " + str(self.Path[self.Path.rfind("\\")+2:])
+			title= "Waveform Check Result of " + str(self.Path[self.Path.rfind("\\")+1:])
 		)
 
 	def Add_Desimal_Unit(self,Data):
