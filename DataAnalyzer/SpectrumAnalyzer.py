@@ -58,8 +58,32 @@ class SpectrumAnalyzer:
 									 sep='\t\s',
    									 nrows=25,
 									)
+			if ',Start,Increment' in str(HeaderCheck.values[0]):
+				HeaderNames = str(HeaderCheck.values[0]).split(',')
+				StartColumn = HeaderNames.index('Start')
+				IncrementColumn = HeaderNames.index('Increment')
+				Start_Time = float(str(HeaderCheck.values[1]).split(',')[StartColumn])
+				Increment_Time = float(str(HeaderCheck.values[1]).split(',')[IncrementColumn].split("'")[0])
+				self.Data_Label = HeaderNames[:StartColumn]
+				self.TraceNumbers = len(self.Data_Label)-1
 
-			if 'MSO64' in HeaderCheck.values[0][0]:
+				self.Table = pd.read_csv(self.Path,
+										 header=self.HeaderRow+1,
+										 sep='\t\s|,',
+										 )
+				self.Table = self.Table.dropna(axis='columns', how='all')  # ver.2.1 drop any NaN data
+				self.Data_Unit = ['Second']
+				self.Time_Data = []
+				for Column in range(len(self.Table)):
+					self.Time_Data.append(float(Start_Time+Increment_Time * Column))
+
+				for ChannelUnit in (HeaderCheck.iloc[1][0]).split(",")[1:self.TraceNumbers+1]:
+					self.Data_Unit.append(ChannelUnit)
+
+				self.Data_Plot = self.Table
+
+
+			elif 'MSO64' in HeaderCheck.values[0][0]:
 				for n in range(len(HeaderCheck)):
 					if 'Labels,' in HeaderCheck.iloc[n][0]:
 						self.HeaderRow = n+1
@@ -94,6 +118,7 @@ class SpectrumAnalyzer:
 				#DataStartRow = max(self.HeaderRow, self.UnitRow) + 1
 
 				self.Data_Plot = self.Table.iloc[1:, :]
+				self.Time_Data = np.array(self.Data_Plot.iloc[:, 0])
 
 			elif 'SDS5104X' in HeaderCheck.values[7][0]:
 				for n in range(len(HeaderCheck)):
@@ -122,6 +147,7 @@ class SpectrumAnalyzer:
 					self.Data_Unit.append(HeaderCheck.iloc[UnitRow][0][19 + n * 7])
 
 				self.Data_Plot = self.Table.iloc[:, :]
+				self.Time_Data = np.array(self.Data_Plot.iloc[:, 0])
 
 			else:
 				data_reader = pd.read_csv(self.Path,
@@ -137,6 +163,9 @@ class SpectrumAnalyzer:
 				#self.Table = self.Table.dropna(how='any')  # ver.2.1 drop any NaN data
 
 				self.Data_Plot = self.Table.iloc[DataStartRow:, :]
+				self.Table = self.Table.dropna(how='any')  # ver.2.1 drop any NaN data
+				self.TraceNumbers = len(self.Data_Label) - 1
+				self.Time_Data = np.array(self.Data_Plot.iloc[:, 0])
 
 		except:
 			data_reader = pd.read_csv(self.Path,
@@ -151,14 +180,14 @@ class SpectrumAnalyzer:
 
 			self.Data_Plot = self.Table.iloc[DataStartRow:, :]
 
-		# DataStartRow = max(self.HeaderRow, self.UnitRow) + 1
-		#
-		self.Table =self.Table.dropna(how='any')	#ver.2.1 drop any NaN data
-		#
-		#
-		# self.Data_Plot = self.Table.iloc[DataStartRow:, :]
-		self.TraceNumbers = len(self.Data_Label) - 1
-		self.Time_Data = np.array(self.Data_Plot.iloc[:,0])
+			# DataStartRow = max(self.HeaderRow, self.UnitRow) + 1
+			#
+			self.Table =self.Table.dropna(how='any')	#ver.2.1 drop any NaN data
+			#
+			#
+			# self.Data_Plot = self.Table.iloc[DataStartRow:, :]
+			self.TraceNumbers = len(self.Data_Label) - 1
+			self.Time_Data = np.array(self.Data_Plot.iloc[:,0])
 		elapstedtime = time.time() - starttime
 		print("CSV Read Completed in {:.3}s".format(elapstedtime))
 		TextWriter("CSV Read Completed in {:.3}s".format(elapstedtime))
@@ -211,7 +240,10 @@ class SpectrumAnalyzer:
 				templist = np.array(self.Data_Plot.iloc[:, n + 1], dtype=np.float32)
 
 				Columnwidth.append(50)
-				HeaderList.append(self.Data_Label[n + 1])
+				try:
+					HeaderList.append(self.Data_Label[n + 1])
+				except:
+					pass
 				UnitList.append(self.Data_Unit[n + 1])
 				DataPointList.append(len(templist))
 				SamplingRate.append(
