@@ -51,6 +51,8 @@ class SpectrumAnalyzer:
 
 	def CSV_Read(self):
 		starttime = time.time()
+		print("Data loading got started...")
+		TextWriter("Data loading got started...")
 
 		try:
 			HeaderCheck =pd.read_csv(self.Path,
@@ -117,16 +119,16 @@ class SpectrumAnalyzer:
 
 				#DataStartRow = max(self.HeaderRow, self.UnitRow) + 1
 
-				self.Data_Plot = self.Table.iloc[1:, :]
+				self.Data_Plot = self.Table.iloc[:, :]
 				self.Time_Data = np.array(self.Data_Plot.iloc[:, 0])
 
 			elif 'SDS5104X' in HeaderCheck.values[7][0]:
 				for n in range(len(HeaderCheck)):
 					if 'Second' in HeaderCheck.iloc[n][0]:
-						self.HeaderRow = n + 1
+						self.HeaderRow = n
 						break
 				### Trace Numbers Finder ###
-				self.Data_Label = HeaderCheck.iloc[10][0].split(',')
+				self.Data_Label = HeaderCheck.iloc[self.HeaderRow-1][0].split(',')
 				NewLabel = []
 				for Key in self.Data_Label:
 					if Key != '':
@@ -135,6 +137,7 @@ class SpectrumAnalyzer:
 				self.Table = pd.read_csv(self.Path,
 										 header=self.HeaderRow,
 										 sep='\t\s|,',
+										 engine='python',
 										 )
 				self.Table = self.Table.dropna(axis='columns', how='all')  # ver.2.1 drop any NaN data
 				self.Data_Unit = ['Second']
@@ -143,8 +146,13 @@ class SpectrumAnalyzer:
 					if 'Vertical Units' in HeaderCheck.iloc[n][0]:
 						UnitRow = n
 						break
-				for n in range(self.TraceNumbers):
-					self.Data_Unit.append(HeaderCheck.iloc[UnitRow][0][19 + n * 7])
+
+				### Unit Name ----
+				UnitRowData = HeaderCheck.iloc[UnitRow][0]
+				UnitRowData = UnitRowData.replace(" ", "") ## Delete Space
+
+				for n in range(1, self.TraceNumbers+1):
+					self.Data_Unit.append(UnitRowData[12 + n*6])
 
 				self.Data_Plot = self.Table.iloc[:, :]
 				self.Time_Data = np.array(self.Data_Plot.iloc[:, 0])
@@ -244,7 +252,11 @@ class SpectrumAnalyzer:
 					HeaderList.append(self.Data_Label[n + 1])
 				except:
 					pass
-				UnitList.append(self.Data_Unit[n + 1])
+
+				try:
+					UnitList.append(self.Data_Unit[n + 1])
+				except:
+					pass
 				DataPointList.append(len(templist))
 				SamplingRate.append(
 					"{:.4}".format(
@@ -457,6 +469,7 @@ class SpectrumAnalyzer:
 		self.Fig_Plotly_TimeWave.update_xaxes(title_text="Time [s]",
 											  type=None,
 											  autorange=False,
+											  exponentformat="SI",
 											  )
 		#return self.Fig_Plotly
 		elapstedtime = time.time() - starttime
@@ -474,6 +487,9 @@ class SpectrumAnalyzer:
 
 	def FreqDomainWaveForm(self,row,col):
 		starttime = time.time()
+		print("FFT Calculation got started...")
+		TextWriter("FFT Calculation got started...")
+		
 		# FFT Calculation ------------
 		Datapoint = len(self.Time_Data)
 		Space = abs(float(self.Time_Data[-1]) - float(self.Time_Data[0]))/len(self.Time_Data)
@@ -539,6 +555,7 @@ class SpectrumAnalyzer:
 									 row=row,col=col)
 		self.Fig_Plotly.update_xaxes(title_text="Frequency [Hz]",
 									 rangeslider_visible=True,
+									 exponentformat="SI",
 									 row=row,col=col)
 
 		self.Fig_Plotly_FreqDomain = go.Figure()

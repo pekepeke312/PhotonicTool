@@ -1,6 +1,11 @@
---- Loading PartInformation File ---
-Loading from C:\Users\IsaoYoneda\Perforce\iyoneda\referenceTechLibDepot\Part Information\Part Number Tracking.xlsx" started
-Loading the all address of Database files Completed in 0.0245s
-Loading  Completed in 7.84s
-Making Address files table Completed in 0.056s
---- Making Table, [Class Code = ] ---
+---Promira Serial Control Batch Creation Mode ---
+Reading Sample sheet
+Making Seq#1 Wavefrom Data
+Making Seq#2 Wavefrom Data
+Making Seq#3 Wavefrom Data
+Making Seq#4 Wavefrom Data
+Data Re-Sampling
+Waveform Viewer is Not Implemented
+XML File, Sample.XML was created
+
+Process Completed

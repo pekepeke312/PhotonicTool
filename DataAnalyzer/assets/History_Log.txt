@@ -19,8 +19,11 @@
 21 Mar 2022: Digikey_WebScraping.py, Change the default currency from Pound to CAD
 3  Jul 2022: Added MSO64 oscilloscope data format
 16 Sep 2022: Added SDS5104X oscilloscope data format
-16 Sep 2022: Added SDS5104X oscilloscope data format
 11 Feb 2023: Updated Digikey_WebScraping.py to fix 403 error
 14 Feb 2023: Added Addtional Sleep Time counter for a safety in Digikey_WebScraping.py
 17 Feb 2023: Limited history log numbers from all to 6.
 25 Feb 2023: Added Digikey and Mouser Stock numbers in BOM check tool
+28 Oct 2023: Fixed a unit bug of SDS5104X oscilloscope data format
+9  Dec 2023: Added DigiKey stock information at next to Mouser Stock
+9  Dec 2023: Impremented Photonic Part Number Search function into BOM search tool.
+21 Jan 2024: Added Promira Serial Batch Creater

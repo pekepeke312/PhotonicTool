@@ -21,7 +21,7 @@ ColourTable = {
 		}
 
 class smith:
-	def __init__(self,path=''):
+	def __init__(self, path=''):
 		self.Path = path
 		self.PlotlyEnable()
 		self.S2PReader(self.Path)

@@ -12,9 +12,18 @@ from DataAnalyzer.DataAnalyzer_Contents import (
     DataAnalyzer_layout,
 )
 
+from ExcelGraph.ExcelGraph_Contensts import (
+    ExcelGraph_layout,
+)
+
 from PartSearch.PartSearch_Contensts import (
     PartSearch_layout,
 )
+
+from Converter.Converter_Contents import (
+    Converter_layout,
+)
+
 
 from Top_Assets.Top_Level_page_HistoryLog import (
     Analysis_Tool_History_layout,
@@ -47,12 +56,18 @@ def tab_menu():
     menu = html.Div(
         [
             dcc.Tabs(id='tabs-selection',
-                     value='Part Search', #Default Page
+                     value='Data Analyzer', #Default Page
                      children=[
+                         dcc.Tab(label='Data Analyzer', value='Data Analyzer', style=tab_style,
+                                 selected_style=tab_selected_style),
+
+                         dcc.Tab(label='Excel Tool', value='Excel Graph', style=tab_style,
+                                 selected_style=tab_selected_style),
+
                          dcc.Tab(label='Part Search', value='Part Search', style=tab_style,
                                  selected_style=tab_selected_style),
 
-                         dcc.Tab(label='Data Analyzer', value='Data Analyzer', style=tab_style,
+                         dcc.Tab(label='Converter Tool', value='Converter', style=tab_style,
                                  selected_style=tab_selected_style),
 
                          dcc.Tab(label='Revision History', value='Revision History', style=tab_style,
@@ -67,7 +82,7 @@ def tab_menu():
     return menu
 
 app.layout = html.Div([
-    html.H1("Photonic Tools"),
+    html.H1("Photonic Tool"),
     tab_menu(),
     html.Div([
         dcc.Location(id="page_url",
@@ -92,8 +107,14 @@ def display_page(Tabselection,pathname):
     if Tabselection == 'Data Analyzer':     #Default Page
         return DataAnalyzer_layout(app)
 
+    elif Tabselection == 'Excel Graph':
+        return ExcelGraph_layout(app)
+
     elif Tabselection == 'Part Search':
         return PartSearch_layout(app)
+
+    elif Tabselection == 'Converter':
+        return Converter_layout(app)
 
     elif Tabselection == 'Revision History':
         return Analysis_Tool_History_layout(app)

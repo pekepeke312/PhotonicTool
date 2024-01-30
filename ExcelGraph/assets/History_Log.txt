@@ -1,0 +1,12 @@
+--Update History Log--
+27 Nov 2021: Brought Excel Graph Functions from Tkinter model
+30 Nov 2021: The first link between xlwings and Dash was implemented
+30 Nov 2021: Succeeded calling 2D histogram from Dash format GUI
+02 Dec 2021: Accepted multiple data type in input box
+03 Dec 2021: Implemented Histogram and 2D Histogram
+04 Dec 2021: Accepted direct name string input that similar to Excel address name
+05 Dec 2021: Implemented Scatter Graph Creater
+12 Dec 2021: Added Console Log Viewer in 1D Histogram, 2D Histogram and Scatter functions
+09 Feb 2022: Fixed file open bug in Excel file opener
+01 Mar 2022: Support Log Scale in Scatter Graph Mode
+15 Dec 2023: Added Unit converter in Scatter Graph

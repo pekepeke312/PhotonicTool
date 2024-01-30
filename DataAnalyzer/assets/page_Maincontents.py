@@ -10,7 +10,7 @@ def create_layout(app):
 	return html.Div([
 		    html.Div([
 		        html.Div([
-		            html.H2("CSV, S2P or BOM file"),
+		            html.H2("CSV, S2P, BOM or Promira file"),
 		            dcc.Upload(
 		                id="upload-data",
 		                children=html.Div(
@@ -51,7 +51,8 @@ def create_layout(app):
 		        html.Div(["Supporting file formats:"]),
 		        html.Div(["1. .CSV from Oscilloscope\n"]),
 		        html.Div(["2. .S2P from Network Analyzer\n"]),
-		        html.Div(["3. 'BOM' file name in xls/xlsx/xlsm file for BOM check\n"],)
+		        html.Div(["3. 'BOM' file name in xls/xlsx/xlsm file for BOM check\n"],),
+				html.Div(["4. 'Promira' file name in xls/xlsx/xlsm file for Promira Serial Batch Creator\n"],),
 		    ],
 		    style={"border": "1px black solid"},
 		    ),
