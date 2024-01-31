@@ -677,9 +677,10 @@ class Promira_Serial_Control:
                     XML_Data.append(
                         fr'  <spi_write ss="{SS}" count="{COUNT}" radix="{RADIX}"> {DATA} </spi_write>'
                     )
-                    XML_Data.append(
-                        fr'  <sleep ms="{SLEEPTIME}"/>'
-                    )
+                    if SLEEPTIME != 0:
+                        XML_Data.append(
+                            fr'  <sleep ms="{SLEEPTIME}"/>'
+                        )
 
                 ### I2C Data Sending
                 if self.SequenceData[SheetName][Sequence_Number]['Mode'] == "I2C":
@@ -743,9 +744,10 @@ class Promira_Serial_Control:
                     XML_Data.append(
                         fr'  <i2c_write addr="{I2C_ADD}" count="{COUNT}" radix="{RADIX}"> {DATA} </i2c_write>'
                     )
-                    XML_Data.append(
-                        fr'  <sleep ms="{SLEEPTIME}"/>'
-                    )
+                    if SLEEPTIME != 0:
+                        XML_Data.append(
+                            fr'  <sleep ms="{SLEEPTIME}"/>'
+                        )
 
             if DIRECTION == 'Read':
                 XML_Data = self.XML_Data_Config(XML_Data=XML_Data,SheetName=SheetName, ModeInput=self.SequenceData[SheetName][Sequence_Number]['Mode'])

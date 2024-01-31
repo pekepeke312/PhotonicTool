@@ -1,6 +1,11 @@
 ---Promira Serial Control Batch Creation Mode ---
-Reading RTM_B1_ADC sheet
+Reading RTM_B1 sheet
 Making Seq#1 Wavefrom Data
----Promira Serial Control Batch Creation Mode ---
-Reading RTM_B1_ADC sheet
-Making Seq#1 Wavefrom Data
+Making Seq#2 Wavefrom Data
+Making Seq#3 Wavefrom Data
+Making Seq#4 Wavefrom Data
+Making Seq#5 Wavefrom Data
+Data Re-Sampling for Sheet: RTM_B1
+XML File, RTM_B1.XML was created
+
+Process Completed
