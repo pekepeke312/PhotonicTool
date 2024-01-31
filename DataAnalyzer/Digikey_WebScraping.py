@@ -1,7 +1,11 @@
 import time
+import pyautogui
+import ctypes
 
 from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
+from TextWriter import TextWriter
 
 
 class Digikey_WebScraping():
@@ -24,7 +28,48 @@ class Digikey_WebScraping():
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.add_experimental_option("detach",True)
+
+
         self.chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+
+    def BotDetectorHandler(self):
+        Button_lotions = self.chrome.find_element_by_xpath("/html/body/div/div/div[2]").rect
+
+        scaleFactor = ctypes.windll.shcore.GetScaleFactorForDevice(0) / 100
+        click_position = [int(Button_lotions['x'] + Button_lotions['width'] / 2) * scaleFactor,
+                          int(Button_lotions['y'] + Button_lotions['height'] * 2) * scaleFactor]
+        BotText = "Click Position Search..."
+        print(BotText)
+        TextWriter(BotText)
+
+        click_element = self.chrome.find_element_by_xpath('/html/body/div/div/div[2]')
+        time.sleep(1)
+
+        BotText = "Mouse Button Holding..."
+        print(BotText)
+        TextWriter(BotText)
+
+        ActionChains(self.chrome).click_and_hold(click_element).perform()
+        time.sleep(5)
+
+        pyautogui.moveTo(x=click_position[0], y=click_position[1], duration=0.1)
+        pyautogui.mouseDown(x=click_position[0], y=click_position[1], duration=20)
+        pyautogui.moveTo(x=click_position[0]+1, y=click_position[1], duration=0.1)
+        pyautogui.moveTo(x=click_position[0] - 1, y=click_position[1], duration=0.1)
+        pyautogui.mouseUp(x=click_position[0], y=click_position[1], duration=3)
+        time.sleep(5)
+
+
+        # pyautogui.mouseUp(button='left')
+        # pyautogui.mouseDown(x=click_position[0], y=click_position[1],button='right')
+        # time.sleep(15)
+        # pyautogui.mouseUp(button='right')
+        # time.sleep(10)
+
+        # while(1):
+        #     print(pyautogui.position())
+        #     TextWriter(pyautogui.position())
+
 
 
     def Scraping(self):
@@ -33,6 +78,17 @@ class Digikey_WebScraping():
         Search_URL = Digikey_URL + self.TargetPN
 
         self.chrome.get(Search_URL)
+
+        ### Ctrl + Shift + 'I' makes debug mode in Chrome
+
+        try:
+            if "At DigiKey," in  self.chrome.find_element_by_xpath('/html/body/div/div/div[1]').text:
+                BotText = "\nBot Detection Program appeared..."
+                print(BotText)
+                TextWriter(BotText)
+                self.BotDetectorHandler()
+        except:
+            pass
 
         try:
             SearchCount = int(self.chrome.find_element_by_xpath('/html/body/div[2]/main/section/div[1]/section/div[1]/div[2]/span/span').text)
@@ -69,7 +125,7 @@ class Digikey_WebScraping():
 
         #### Getting DigiKey Qty ###
         try:
-            Qty_text = self.chrome.find_element_by_xpath('/html/body/div[2]/main/div/div[1]/div[2]/div[1]/div/div[1]/div/div/span').text
+            Qty_text = self.chrome.find_element_by_xpath('/html/body/div[2]/div/main/div/div[1]/div[2]/div/div/div/div[1]/div').text
             return Qty_text
         except:
             return ""

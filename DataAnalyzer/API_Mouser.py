@@ -11,6 +11,7 @@ import time
 import subprocess
 import shutil
 import os
+import pathlib
 
 SCRAPING_TIME_MARGIN = 5
 
@@ -20,6 +21,12 @@ if __name__ != "__main__":
 else:
     from Digikey_WebScraping import Digikey_WebScraping
 
+PartSearchPath = str(pathlib.Path(__file__).parent.parent)
+PartInfoDatabaseAddress = PartSearchPath + str('\\PartSearch\\assets\\PartInfoDatabaseAddress.xlsx')
+
+from PartSearch.PartSearchTool import PartSearchTool#, PartInfoDatabaseAddress
+
+
 class API_Mouser():
     def __init__(self, PNList = [""], PN="",PATH="", APIKEY="", APIver="v1.0"):
         self.URL_Endpoint = 'https://api.mouser.com/api/' + APIver + '/search/keyword'
@@ -27,21 +34,25 @@ class API_Mouser():
         self.TargetPartNumber = PN
         self.PartList = PNList
         self.PartNumberList_BOM = {}
+        self.InternalDatabaseLoader()
         self.DigikeyPartInfo = Digikey_WebScraping()
 
         ### Methods ###
         ### Single Part Number Case
         if PN != "":
             self.Get_From_Mouser(self.TargetPartNumber)
+            # self.InternalDatabaseLoader()
             self.ParameterUpdate()
         ### Multipule Number Case
         elif PNList != [""]:
             self.Get_Multiple_Data_From_Mouser(PNList=self.PartList)
+            # self.InternalDatabaseLoader()
             self.ColumnOrderUpdate()
             self.WritingExcel()
         elif PATH !="":
             self.BOMReader(PATH)
             self.Get_Multiple_Data_From_Mouser(PNList = list(self.PartNumberList_BOM.keys()))
+            # self.InternalDatabaseLoader()
             self.ColumnOrderUpdate()
             self.WritingExcel()
         print("")
@@ -54,10 +65,10 @@ class API_Mouser():
             ItemID_List = np.array(self.BOM_data['Item ID'])
         except:
             try:
-                ItemID_List = np.array(self.BOM_data['Part Number'])
+                ItemID_List = np.array(self.BOM_data['7-digit PN'])
             except:
                 try:
-                    ItemID_List = np.array(self.BOM_data['7-digit PN'])
+                    ItemID_List = np.array(self.BOM_data['Part Number'])
                 except:
                     pass
                 pass
@@ -71,6 +82,10 @@ class API_Mouser():
                 try:
                     Mfr_List = np.array(self.BOM_data['Manufacturer PN'])
                 except:
+                    try:
+                        Mfr_List = np.array(self.BOM_data['Manufacturer Part Number 1'])
+                    except:
+                        pass
                     pass
                 pass
 
@@ -99,6 +114,69 @@ class API_Mouser():
             time.sleep(Additonal_Sleep_Time)
             print("Operation was too fast; Sleeping for {:.3}s".format(Additonal_Sleep_Time))
             TextWriter("Operation was too fast; Sleeping for {:.3}s".format(Additonal_Sleep_Time))
+
+    def InternalDatabaseLoader(self):
+        starttime = time.time()
+        text = "--- Loading Photonic Part Numbers from Perforce Database"
+        print(text)
+        TextWriter(text)
+
+        PartSearch = PartSearchTool()
+        InternalDatabase = PartSearch.DatabaseLoader(Path=PartInfoDatabaseAddress)
+        ExcelRaw = pd.read_excel(InternalDatabase["Address"], sheet_name=None, header=None)
+
+        ## Finding Valid Sheet Names ------------------
+        L_Valid_Sheet_Names = []
+        for Value in ExcelRaw.keys():
+            if (re.search(r'\d{2}', Value)):
+                L_Valid_Sheet_Names.append(Value)
+
+        ## Making Database -----------------
+        self.PartNumberDatabase = []
+
+        for Sheet in L_Valid_Sheet_Names:
+            for n in range(len(ExcelRaw[Sheet].values)):
+                for k in range(len(ExcelRaw[Sheet].values[n, :])):
+                    try:
+                        if (ExcelRaw[Sheet].values[n, k] == "Mfg1 PN") or (
+                                ExcelRaw[Sheet].values[n, k] == "Manufacturer PN"):
+                            Column_ManufacturerPN = k
+                    except:
+                        Column_ManufacturerPN = nan
+
+                    if ExcelRaw[Sheet].values[n, k] == ("7-digit PN"):
+                        Column_PartNumber = k
+
+            for n in range(1, len(ExcelRaw[Sheet].values)):
+                try:
+                    PartNumber = ExcelRaw[Sheet].values[n, Column_PartNumber]
+                except:
+                    print()
+
+                try:
+                    ManufacturerPN = ExcelRaw[Sheet].values[n, Column_ManufacturerPN]
+                except:
+                    ManufacturerPN = ""
+
+                self.PartNumberDatabase.append(
+                    (
+                        PartNumber,
+                        ManufacturerPN,
+                    )
+                )
+        self.DF_PartDataBase = pd.DataFrame(self.PartNumberDatabase, dtype='str')
+        self.DF_PartDataBase.columns = ["PartNumber",
+                                        "Manufacturer PN",
+                                        ]
+
+        elapstedtime = time.time() - starttime
+        text = 'Loading the all Parts in {:.3}s'.format(elapstedtime)
+        print(text)
+        TextWriter(text)
+
+    def Get_Photonic_PartNumber(self, MfrPN = ""):
+        Photonic_PN = str(self.DF_PartDataBase[self.DF_PartDataBase["Manufacturer PN"] == MfrPN]["PartNumber"].values[0])
+        return Photonic_PN
 
     def Get_From_Mouser(self, PartNumber = ""):
         headers = {
@@ -160,7 +238,7 @@ class API_Mouser():
             self.ParameterUpdate()
 
             self.indexlist = [
-                ("Photonic#",""),
+                ("Photonic#", ""),
                 ("Part Number", ""),
                 ("Category", ""),
                 ("Type", ""),
@@ -179,7 +257,8 @@ class API_Mouser():
 
             Datadict ={}
             try:
-                Datadict[self.indexlist[0]] = self.PartNumberList_BOM[list(PNList)[PNn]]
+                # Datadict[self.indexlist[0]] = self.PartNumberList_BOM[list(PNList)[PNn]]
+                Datadict[self.indexlist[0]] = self.Get_Photonic_PartNumber(self.PartParameter("ManufacturerPartNumber"))
             except:
                 pass
             Datadict[self.indexlist[1]] = self.PartParameter("ManufacturerPartNumber")
@@ -541,9 +620,8 @@ class API_Mouser():
 if __name__ == "__main__":
 
     apikey=os.environ['MOUSER_API']
-    apikey="5931c47c-bd17-4749-9c89-c9d73b9eba00" #Ekta's
 
-    TEST =1
+    TEST =6
     if TEST == 1: # Part from text
             PartNumber = "ERJ-3GEYJ390V"
             Mouser = API_Mouser(PN=PartNumber, APIKEY=apikey)
@@ -587,3 +665,7 @@ if __name__ == "__main__":
                           "MAX13450EAUD+",
                           ]
         MouserList = API_Mouser(PNList=PartNumberList, APIKEY=apikey)
+
+    elif TEST == 6:
+        PartList = ""
+        List = API_Mouser(PNList=PartList, APIKEY=apikey)

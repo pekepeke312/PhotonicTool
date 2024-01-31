@@ -1,6 +1,7 @@
 --- Loading PartInformation File ---
-Loading from C:\Users\IsaoYoneda\Perforce\iyoneda\referenceTechLibDepot\Part Information\Part Number Tracking.xlsx" started
-Loading the all address of Database files Completed in 0.0245s
-Loading  Completed in 7.84s
-Making Address files table Completed in 0.056s
+Loading from C:\Users\pekep\Downloads\Part Number Tracking.xlsx" started
+Loading the all address of Database files Completed in 0.078s
+Loading  Completed in 15.6s
+Making Address files table Completed in 0.159s
 --- Making Table, [Class Code = ] ---
+--- Making Table, [Class Code = 210 - Analog ICs] ---
