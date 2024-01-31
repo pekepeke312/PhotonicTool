@@ -74,17 +74,44 @@ class Promira_Serial_Control:
         customdata_I2C = {}
 
         templist = []
-        for n in range(len(self.MasterWaveData[Sheet]["I2C_SCL"])):
-            templist.append([
-                    Time_wunit[Sheet][n],
-                    self.MasterWaveData[Sheet]["I2C_DataName"][n],
-                    self.MasterWaveData[Sheet]["I2C_SCL"][n],
-                    self.MasterWaveData[Sheet]["I2C_SDA"][n],
-                    self.MasterWaveData[Sheet]["SPI_DataName"][n],
-                    self.MasterWaveData[Sheet]["SPI_SCLK"][n],
-                    self.MasterWaveData[Sheet]["SPI_MOSI"][n],
-            ])
-        customdata_I2C[Sheet] = templist
+        if len(self.MasterWaveData[Sheet]["I2C_SCL"]) != 0 and len(self.MasterWaveData[Sheet]["SPI_SCLK"]) != 0:
+            for n in range(len(self.MasterWaveData[Sheet]["Time"])):
+                templist.append([
+                        Time_wunit[Sheet][n],
+                        self.MasterWaveData[Sheet]["I2C_DataName"][n],
+                        self.MasterWaveData[Sheet]["I2C_SCL"][n],
+                        self.MasterWaveData[Sheet]["I2C_SDA"][n],
+                        self.MasterWaveData[Sheet]["SPI_DataName"][n],
+                        self.MasterWaveData[Sheet]["SPI_SCLK"][n],
+                        self.MasterWaveData[Sheet]["SPI_MOSI"][n],
+                ])
+            customdata_I2C[Sheet] = templist
+
+        if len(self.MasterWaveData[Sheet]["I2C_SCL"]) == 0 and len(self.MasterWaveData[Sheet]["SPI_SCLK"]) != 0:
+            for n in range(len(self.MasterWaveData[Sheet]["Time"])):
+                templist.append([
+                        Time_wunit[Sheet][n],
+                        0,
+                        0,
+                        0,
+                        self.MasterWaveData[Sheet]["SPI_DataName"][n],
+                        self.MasterWaveData[Sheet]["SPI_SCLK"][n],
+                        self.MasterWaveData[Sheet]["SPI_MOSI"][n],
+                ])
+            customdata_I2C[Sheet] = templist
+
+        if len(self.MasterWaveData[Sheet]["I2C_SCL"]) != 0 and len(self.MasterWaveData[Sheet]["SPI_SCLK"]) == 0:
+            for n in range(len(self.MasterWaveData[Sheet]["Time"])):
+                templist.append([
+                        Time_wunit[Sheet][n],
+                        self.MasterWaveData[Sheet]["I2C_DataName"][n],
+                        self.MasterWaveData[Sheet]["I2C_SCL"][n],
+                        self.MasterWaveData[Sheet]["I2C_SDA"][n],
+                        0,
+                        0,
+                        0,
+                ])
+            customdata_I2C[Sheet] = templist
 
         self.PlotlyGraph[Sheet].add_trace(
             go.Scatter(
@@ -296,10 +323,10 @@ class Promira_Serial_Control:
 
         if SPI_MODE == 0 or SPI_MODE == 1:
             self.WaveData[SheetName]['SPI_SCLK'].append(0)
-            self.WaveData[SheetName]['SPI_SCLK'].append(0)
+            # self.WaveData[SheetName]['SPI_SCLK'].append(0)
         elif SPI_MODE == 2 or SPI_MODE == 3:
             self.WaveData[SheetName]['SPI_SCLK'].append(Voltage)
-            self.WaveData[SheetName]['SPI_SCLK'].append(Voltage)
+            # self.WaveData[SheetName]['SPI_SCLK'].append(Voltage)
 
         ### Makin Data bit Stream
         scale = 16  ## equals to hexadecimal
