@@ -12,7 +12,6 @@ import os
 if __name__ != "__main__":
 	Toppath = str(pathlib.Path(__file__).parent.resolve())
 	PartInfoDatabaseAddress = Toppath + str('\\assets\\PartInfoDatabaseAddress.xlsx')
-	#PATH = "PowerModuleCheck//assets//DatabaseLink.xlsx"
 else:
 	PartInfoDatabaseAddress = "assets//PartInfoDatabaseAddress.xlsx"
 
@@ -62,6 +61,8 @@ class PartSearchTool():
 		text = 'Loading the all address of Database files Completed in {:.3}s'.format(elapstedtime)
 		print(text)
 		TextWriter(text)
+
+		return self.DataBase
 
 	def AddressFilesTable(self):
 		starttime = time.time()

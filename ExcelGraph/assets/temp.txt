@@ -1,0 +1,58 @@
+/*
+// Test 2-1 Phase Change
+cvar samples = 1000;
+cvar amplitude = 1;
+cvar phaseOffset = 90;
+cvar nrOfPeriods = 1;
+
+wave wave_sine = sine(samples, amplitude, phaseOffset, nrOfPeriods);
+
+while (1) {
+  playWave(wave_sine);
+  wait(1000);
+}
+*/
+
+/*
+// Test 1-3 Generation of Sine Wave Modulation Case
+cvar samples = 1000;
+cvar amplitude = 1;
+cvar phaseOffset = 0;
+cvar nrOfPeriods = 1;
+
+wave wave_sine = sine(samples, amplitude, phaseOffset, nrOfPeriods);
+
+while (1) {
+  playWave(wave_sine);
+}
+*/
+
+
+/*
+// Test 1-2 Generation of Triangle Wave Modulation Case
+cvar samples = 16 * 5;
+cvar amplitude = 1;
+cvar phaseOffset = 0;
+cvar nrOfPeriods = 1;
+
+wave wave_Tri = triangle(samples, amplitude, phaseOffset, nrOfPeriods);
+
+
+while (1) {
+  playWave(wave_Tri);
+  //wait(425);
+}
+*/
+
+
+/* 
+// Test 1-1 Generation of Square Wave Modulation Case
+wave wave_1 = ones(1000);
+wave wave_0 = zeros(1000);
+
+wave wave_joined = join(wave_0, wave_1);
+
+while (1) {
+  playWave(wave_joined);
+}
+*/

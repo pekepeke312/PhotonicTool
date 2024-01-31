@@ -67,7 +67,6 @@ def create_layout(app):
 					filter_options={
 						'case': 'insensitive',
 					},
-
 					sort_action='custom',
 					sort_mode='single',
 					sort_by=[],

@@ -47,7 +47,7 @@ class PartSearchSettingInstaller():
             self.CheckResult.set("Configuration set completed")
         else:
             self.CheckResult.set("This Folder does not contain 'Part Number Tracking.xlsx'")
-
+            
     def ExcelWriter(self):
         workbook = op.load_workbook("PartSearch\\assets\\PartInfoDatabaseAddress.xlsx")
         worksheet = workbook["Sheet1"]
