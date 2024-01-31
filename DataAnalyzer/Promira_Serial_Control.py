@@ -212,8 +212,18 @@ class Promira_Serial_Control:
 
         ###Making Address Bit Stream
         scale = 16  ## equals to hexadecimal
+        ADDR = str(SequenceData['I2C Add']).replace(" ", "")
+        if ADDR[:2] == '0b':
+            ADDR = hex(int(ADDR[2:], 2))
+
         num_of_bits = 7
-        Add_bin = bin(int(str(SequenceData['I2C Add']), scale))[2:].zfill(num_of_bits)
+        # Add_bin = bin(int(str(SequenceData['I2C Add']), scale))[2:].zfill(num_of_bits)
+        Add_bin = bin(int(str(ADDR), scale))[2:].zfill(num_of_bits)
+
+
+        # scale = 16  ## equals to hexadecimal
+        # num_of_bits = 7
+        # Add_bin = bin(int(str(SequenceData['I2C Add']), scale))[2:].zfill(num_of_bits)
 
         self.I2C_Add_X(Sheet= SheetName, TickTime=TickTime_4, Bit=0, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", CLKSLEEP=True)
 
@@ -230,8 +240,19 @@ class Promira_Serial_Control:
         self.I2C_Add_X(Sheet= SheetName, TickTime=TickTime_4, Bit=0, AMP=Voltage, Name='Sq#'+str(SequenceNumber)+":",CLKSLEEP=True)
 
         ### Makin Data bit Stream
-        unm_of_data_bits = len(SequenceData['Sending Data']) * 4
-        Data_bin = bin(int(str(SequenceData['Sending Data']), scale))[2:].zfill(unm_of_data_bits)
+        scale = 16  ## equals to hexadecimal
+        DATA = str(SequenceData['Sending Data']).replace(" ", "")
+        if DATA[:2] == '0b':
+            DATA = hex(int(DATA[2:], 2))
+
+        num_of_bits = 8
+        # Add_bin = bin(int(str(SequenceData['I2C Add']), scale))[2:].zfill(num_of_bits)
+
+        unm_of_data_bits = len(DATA) * 4
+        Data_bin = bin(int(str(DATA), scale))[2:].zfill(unm_of_data_bits)
+
+        # unm_of_data_bits = len(SequenceData['Sending Data']) * 4
+        # Data_bin = bin(int(str(SequenceData['Sending Data']), scale))[2:].zfill(unm_of_data_bits)
 
         Bit_Counter = 7
         for n, bit in enumerate(Data_bin):
@@ -282,8 +303,18 @@ class Promira_Serial_Control:
 
         ### Makin Data bit Stream
         scale = 16  ## equals to hexadecimal
-        unm_of_data_bits = len(SequenceData['Sending Data']) * 4
-        Data_bin = bin(int(str(SequenceData['Sending Data']), scale))[2:].zfill(unm_of_data_bits)
+        DATA = str(SequenceData['Sending Data']).replace(" ", "")
+        if DATA[:2] == '0b':
+            DATA = hex(int(DATA[2:], 2))
+
+        num_of_bits = 8
+        # Add_bin = bin(int(str(SequenceData['I2C Add']), scale))[2:].zfill(num_of_bits)
+
+        unm_of_data_bits = len(DATA) * 4
+        Data_bin = bin(int(str(DATA), scale))[2:].zfill(unm_of_data_bits)
+
+        # unm_of_data_bits = len(SequenceData['Sending Data']) * 4
+        # Data_bin = bin(int(str(SequenceData['Sending Data']), scale))[2:].zfill(unm_of_data_bits)
 
         ### Initial
         self.SPI_Add_X(Sheet= SheetName, TickTime=TickTime_2, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", CLKSLEEP=True)
@@ -328,58 +359,60 @@ class Promira_Serial_Control:
         )
 
         ### I2C Part
-        Data_ticknumber = 1
-        for m_ticknumber in range(len(Master_TimeLine)):
-            m_time = Master_TimeLine[m_ticknumber]
+        if self.WaveData[Sheet]["I2C_Time"] != []:
+            Data_ticknumber = 1
+            for m_ticknumber in range(len(Master_TimeLine)):
+                m_time = Master_TimeLine[m_ticknumber]
 
-            try:
-                Data_time = self.WaveData[Sheet]["I2C_Time"][Data_ticknumber]
-            except:
-                pass
-
-            if m_time <= Data_time:
-                self.MasterWaveData[Sheet]["I2C_SCL"].append(self.WaveData[Sheet]["I2C_SCL"][Data_ticknumber-1])
-                self.MasterWaveData[Sheet]["I2C_SDA"].append(self.WaveData[Sheet]["I2C_SDA"][Data_ticknumber-1])
-                self.MasterWaveData[Sheet]["I2C_DataName"].append(self.WaveData[Sheet]["I2C_DataName"][Data_ticknumber-1])
-            else:
                 try:
-                    self.MasterWaveData[Sheet]["I2C_SCL"].append(self.WaveData[Sheet]["I2C_SCL"][Data_ticknumber])
-                    self.MasterWaveData[Sheet]["I2C_SDA"].append(self.WaveData[Sheet]["I2C_SDA"][Data_ticknumber])
-                    self.MasterWaveData[Sheet]["I2C_DataName"].append(self.WaveData[Sheet]["I2C_DataName"][Data_ticknumber])
+                    Data_time = self.WaveData[Sheet]["I2C_Time"][Data_ticknumber]
                 except:
-                    self.MasterWaveData[Sheet]["I2C_SCL"].append(self.WaveData[Sheet]["I2C_SCL"][-1])
-                    self.MasterWaveData[Sheet]["I2C_SDA"].append(self.WaveData[Sheet]["I2C_SDA"][-1])
-                    self.MasterWaveData[Sheet]["I2C_DataName"].append(self.WaveData[Sheet]["I2C_DataName"][-1])
-                Data_ticknumber += 1
+                    pass
+
+                if m_time <= Data_time:
+                    self.MasterWaveData[Sheet]["I2C_SCL"].append(self.WaveData[Sheet]["I2C_SCL"][Data_ticknumber-1])
+                    self.MasterWaveData[Sheet]["I2C_SDA"].append(self.WaveData[Sheet]["I2C_SDA"][Data_ticknumber-1])
+                    self.MasterWaveData[Sheet]["I2C_DataName"].append(self.WaveData[Sheet]["I2C_DataName"][Data_ticknumber-1])
+                else:
+                    try:
+                        self.MasterWaveData[Sheet]["I2C_SCL"].append(self.WaveData[Sheet]["I2C_SCL"][Data_ticknumber])
+                        self.MasterWaveData[Sheet]["I2C_SDA"].append(self.WaveData[Sheet]["I2C_SDA"][Data_ticknumber])
+                        self.MasterWaveData[Sheet]["I2C_DataName"].append(self.WaveData[Sheet]["I2C_DataName"][Data_ticknumber])
+                    except:
+                        self.MasterWaveData[Sheet]["I2C_SCL"].append(self.WaveData[Sheet]["I2C_SCL"][-1])
+                        self.MasterWaveData[Sheet]["I2C_SDA"].append(self.WaveData[Sheet]["I2C_SDA"][-1])
+                        self.MasterWaveData[Sheet]["I2C_DataName"].append(self.WaveData[Sheet]["I2C_DataName"][-1])
+                    Data_ticknumber += 1
 
         ### SPI Part
-        Data_ticknumber = 1
-        for m_ticknumber in range(len(Master_TimeLine)):
-            m_time = Master_TimeLine[m_ticknumber]
+        if self.WaveData[Sheet]["SPI_Time"] != []:
+            Data_ticknumber = 1
+            for m_ticknumber in range(len(Master_TimeLine)):
+                m_time = Master_TimeLine[m_ticknumber]
 
-            try:
-                Data_time = self.WaveData[Sheet]["SPI_Time"][Data_ticknumber]
-            except:
-                pass
-
-            if m_time <= Data_time:
                 try:
-                    self.MasterWaveData[Sheet]["SPI_SCLK"].append(self.WaveData[Sheet]["SPI_SCLK"][Data_ticknumber - 1])
+                    Data_time = self.WaveData[Sheet]["SPI_Time"][Data_ticknumber]
                 except:
-                    print("")
+                    pass
 
-                self.MasterWaveData[Sheet]["SPI_MOSI"].append(self.WaveData[Sheet]["SPI_MOSI"][Data_ticknumber - 1])
-                self.MasterWaveData[Sheet]["SPI_DataName"].append(self.WaveData[Sheet]["SPI_DataName"][Data_ticknumber - 1])
-            else:
-                try:
-                    self.MasterWaveData[Sheet]["SPI_SCLK"].append(self.WaveData[Sheet]["SPI_SCLK"][Data_ticknumber])
-                    self.MasterWaveData[Sheet]["SPI_MOSI"].append(self.WaveData[Sheet]["SPI_MOSI"][Data_ticknumber])
-                    self.MasterWaveData[Sheet]["SPI_DataName"].append(self.WaveData[Sheet]["SPI_DataName"][Data_ticknumber])
-                except:
-                    self.MasterWaveData[Sheet]["SPI_SCLK"].append(self.WaveData[Sheet]["SPI_SCLK"][-1])
-                    self.MasterWaveData[Sheet]["SPI_MOSI"].append(self.WaveData[Sheet]["SPI_MOSI"][-1])
-                    self.MasterWaveData[Sheet]["SPI_DataName"].append(self.WaveData[Sheet]["SPI_DataName"][-1])
-                Data_ticknumber += 1
+                if m_time <= Data_time:
+                    try:
+                        self.MasterWaveData[Sheet]["SPI_SCLK"].append(self.WaveData[Sheet]["SPI_SCLK"][Data_ticknumber - 1])
+                    except:
+                        print("")
+
+                    self.MasterWaveData[Sheet]["SPI_MOSI"].append(self.WaveData[Sheet]["SPI_MOSI"][Data_ticknumber - 1])
+                    self.MasterWaveData[Sheet]["SPI_DataName"].append(self.WaveData[Sheet]["SPI_DataName"][Data_ticknumber - 1])
+                else:
+                    try:
+                        self.MasterWaveData[Sheet]["SPI_SCLK"].append(self.WaveData[Sheet]["SPI_SCLK"][Data_ticknumber])
+                        self.MasterWaveData[Sheet]["SPI_MOSI"].append(self.WaveData[Sheet]["SPI_MOSI"][Data_ticknumber])
+                        self.MasterWaveData[Sheet]["SPI_DataName"].append(self.WaveData[Sheet]["SPI_DataName"][Data_ticknumber])
+                    except:
+                        self.MasterWaveData[Sheet]["SPI_SCLK"].append(self.WaveData[Sheet]["SPI_SCLK"][-1])
+                        self.MasterWaveData[Sheet]["SPI_MOSI"].append(self.WaveData[Sheet]["SPI_MOSI"][-1])
+                        self.MasterWaveData[Sheet]["SPI_DataName"].append(self.WaveData[Sheet]["SPI_DataName"][-1])
+                    Data_ticknumber += 1
 
         print("")
 
@@ -779,6 +812,9 @@ class Promira_Serial_Control:
             TextWriter(fr"Reading {Sheet} sheet")
 
             self.GUI_Control(Sheet= Sheet)
+
+            if not os.path.exists(path_desktop + r'Promira_Batch_files'):
+                os.mkdir(path_desktop + r'Promira_Batch_files')
 
             self.XML_File_Writer(FileLocation=path_desktop + r'Promira_Batch_files',
                                     SheetName=Sheet)

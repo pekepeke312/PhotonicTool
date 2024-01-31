@@ -1,21 +1,6 @@
-<<<<<<< HEAD
---- Loading PartInformation File ---
-Loading from C:\Users\pekep\Downloads\Part Number Tracking.xlsx" started
-Loading the all address of Database files Completed in 0.078s
-Loading  Completed in 15.6s
-Making Address files table Completed in 0.159s
---- Making Table, [Class Code = ] ---
---- Making Table, [Class Code = 210 - Analog ICs] ---
-=======
 ---Promira Serial Control Batch Creation Mode ---
-Reading Sample sheet
+Reading RTM_B1_ADC sheet
 Making Seq#1 Wavefrom Data
-Making Seq#2 Wavefrom Data
-Making Seq#3 Wavefrom Data
-Making Seq#4 Wavefrom Data
-Data Re-Sampling
-Waveform Viewer is Not Implemented
-XML File, Sample.XML was created
-
-Process Completed
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
+---Promira Serial Control Batch Creation Mode ---
+Reading RTM_B1_ADC sheet
+Making Seq#1 Wavefrom Data
