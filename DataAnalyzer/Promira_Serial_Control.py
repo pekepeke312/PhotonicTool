@@ -57,17 +57,12 @@ class Promira_Serial_Control:
             os.mkdir(XMLFileDir)
     def GUI_Control(self, Sheet = "Sheet") -> None:
 
-<<<<<<< HEAD
         self.PlotlyGraph[Sheet] = make_subplots(rows=4,
-=======
-        self.PlotlyGraph = make_subplots(rows=4,
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
                                          cols=1,#2,
                                          shared_xaxes=True,
                                          vertical_spacing=0.1,
                                          subplot_titles=SIGNAL_NAME,
                                          )
-<<<<<<< HEAD
         # self.PlotlyGraph[Sheet] = temp
 
         # self.LstTime = {}
@@ -100,70 +95,10 @@ class Promira_Serial_Control:
                 hoverinfo='text',
                 name='I2C-SCL',
                 line=dict(color=ColourTable[0])
-=======
-
-        self.WaveData_Genarater()
-        Time_wunit = self.Add_Desimal_Unit(self.MasterWaveData['Time'])
-        customdata_I2C = []
-
-        if len(self.MasterWaveData["I2C_SCL"]) != 0 and len(self.MasterWaveData["SPI_SCLK"]) != 0:
-            for n in range(len(self.MasterWaveData["I2C_SCL"])):
-                customdata_I2C.append(
-                        [
-                            Time_wunit[n],
-                            self.MasterWaveData["I2C_DataName"][n],
-                            self.MasterWaveData["I2C_SCL"][n],
-                            self.MasterWaveData["I2C_SDA"][n],
-                            self.MasterWaveData["SPI_DataName"][n],
-                            self.MasterWaveData["SPI_SCLK"][n],
-                            self.MasterWaveData["SPI_MOSI"][n],
-                        ]
-                )  # for Data
-
-        if len(self.MasterWaveData["I2C_SCL"]) != 0 and len(self.MasterWaveData["SPI_SCLK"]) == 0:
-            for n in range(len(self.MasterWaveData["I2C_SCL"])):
-                customdata_I2C.append(
-                        [
-                            Time_wunit[n],
-                            self.MasterWaveData["I2C_DataName"][n],
-                            self.MasterWaveData["I2C_SCL"][n],
-                            self.MasterWaveData["I2C_SDA"][n],
-                            0,
-                            0,
-                            0,
-                        ]
-                )  # for Data
-
-        if len(self.MasterWaveData["I2C_SCL"]) == 0 and len(self.MasterWaveData["SPI_SCLK"]) != 0:
-            for n in range(len(self.MasterWaveData["I2C_SCL"])):
-                customdata_I2C.append(
-                        [
-                            Time_wunit[n],
-                            0,
-                            0,
-                            0,
-                            self.MasterWaveData["SPI_DataName"][n],
-                            self.MasterWaveData["SPI_SCLK"][n],
-                            self.MasterWaveData["SPI_MOSI"][n],
-                        ]
-                )  # for Data
-
-
-        self.PlotlyGraph.add_trace(
-            go.Scatter(
-                    visible=True,
-                    x=self.MasterWaveData["Time"],
-                    y=self.MasterWaveData["I2C_SCL"],
-                    text=[f'Time: {Time}s <br>{DataName} <br> I2C-SCL: {SCL}[V]' for [Time, DataName, SCL, SDA, SPI_NAME, SCLK, MOSI] in customdata_I2C],
-                    hoverinfo='text',
-                    name='I2C-SCL',
-                    line=dict(color=ColourTable[0])
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             ),
             row=1, col=1,
         ),
 
-<<<<<<< HEAD
         self.PlotlyGraph[Sheet].add_trace(
             go.Scatter(
                 visible=True,
@@ -173,22 +108,10 @@ class Promira_Serial_Control:
                 hoverinfo='text',
                 name='I2C-SDA',
                 line=dict(color=ColourTable[1])
-=======
-        self.PlotlyGraph.add_trace(
-            go.Scatter(
-                    visible=True,
-                    x=self.MasterWaveData["Time"],
-                    y=self.MasterWaveData["I2C_SDA"],
-                    text=[f'Time: {Time}s <br>{DataName} <br>I2C-SDA: {SDA}[V]' for [Time, DataName, SCL, SDA, SPI_NAME,SCLK, MOSI] in customdata_I2C],
-                    hoverinfo='text',
-                    name='I2C-SDA',
-                    line=dict(color=ColourTable[1])
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             ),
             row=2, col=1,
         ),
 
-<<<<<<< HEAD
         self.PlotlyGraph[Sheet].add_trace(
             go.Scatter(
                 visible=True,
@@ -198,22 +121,10 @@ class Promira_Serial_Control:
                 hoverinfo='text',
                 name='SPI-SCLK',
                 line=dict(color=ColourTable[2])
-=======
-        self.PlotlyGraph.add_trace(
-            go.Scatter(
-                    visible=True,
-                    x=self.MasterWaveData["Time"],
-                    y=self.MasterWaveData["SPI_SCLK"],
-                    text=[f'Time: {Time}s <br>{SPI_NAME} <br> SPI-SCLK: {SCLK}[V]' for [Time, DataName, SCL, SDA, SPI_NAME,SCLK, MOSI] in customdata_I2C],
-                    hoverinfo='text',
-                    name='SPI-SCLK',
-                    line=dict(color=ColourTable[2])
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             ),
             row=3, col=1,
         ),
 
-<<<<<<< HEAD
         self.PlotlyGraph[Sheet].add_trace(
             go.Scatter(
                 visible=True,
@@ -223,26 +134,11 @@ class Promira_Serial_Control:
                 hoverinfo='text',
                 name='SPI-MOSI',
                 line=dict(color=ColourTable[3])
-=======
-        self.PlotlyGraph.add_trace(
-            go.Scatter(
-                    visible=True,
-                    x=self.MasterWaveData["Time"],
-                    y=self.MasterWaveData["SPI_MOSI"],
-                    text=[f'Time: {Time}s <br>{SPI_NAME} <br> SPI-MOSI: {MOSI}[V]' for [Time, DataName, SCL, SDA, SPI_NAME,SCLK, MOSI] in customdata_I2C],
-                    hoverinfo='text',
-                    name='SPI-MOSI',
-                    line=dict(color=ColourTable[3])
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             ),
             row=4, col=1,
         ),
 
-<<<<<<< HEAD
         self.PlotlyGraph[Sheet].update_layout(
-=======
-        self.PlotlyGraph.update_layout(
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             title=dict(
                 text='Expected Waveform from Promira Serial with "' + Sheet +'"',
                 xanchor='auto'
@@ -254,7 +150,6 @@ class Promira_Serial_Control:
 
         # self.PlotlyGraph["layout"]["sliders"] = [self.SliderSetting(RangeList=self.Add_Desimal_Unit(self.MasterWaveData['Time']))]
 
-<<<<<<< HEAD
         self.PlotlyGraph[Sheet].show()
         # print(fr"Waveform Viewer is Not Implemented")
         # TextWriter(fr"Waveform Viewer is Not Implemented")
@@ -302,62 +197,12 @@ class Promira_Serial_Control:
                 for _ in range(4):self.WaveData[Sheet]['I2C_SDA'].append(0.0)
 
             for _ in range(4): self.WaveData[Sheet]['I2C_Time'].append(self.WaveData[Sheet]['I2C_Time'][-1]+TickTime)
-=======
-        self.PlotlyGraph.show()
-        print(fr"Waveform Viewer is Not Implemented")
-        TextWriter(fr"Waveform Viewer is Not Implemented")
-
-    def SPI_Add_X(self, TickTime, Bit=0, AMP=0, Name="",SPI_MODE=0, CLKSLEEP=False):
-        if not CLKSLEEP:
-            if SPI_MODE == 0 or SPI_MODE ==3:
-                self.WaveData["SPI_SCLK"].append(0.0)
-                self.WaveData["SPI_SCLK"].append(AMP)
-            elif SPI_MODE == 1 or SPI_MODE == 2:
-                self.WaveData["SPI_SCLK"].append(AMP)
-                self.WaveData["SPI_SCLK"].append(0.0)
-        else:
-            if SPI_MODE == 0 or SPI_MODE == 1:
-                for _ in range(2): self.WaveData['SPI_SCLK'].append(0.0)
-            elif SPI_MODE == 2 or SPI_MODE == 3:
-                for _ in range(2): self.WaveData['SPI_SCLK'].append(AMP)
-
-        if str(Bit) == '1':
-            for _ in range(2): self.WaveData['SPI_MOSI'].append(AMP)
-        elif str(Bit) == '0':
-            for _ in range(2): self.WaveData['SPI_MOSI'].append(0.0)
-
-        for _ in range(2): self.WaveData['SPI_Time'].append(self.WaveData['SPI_Time'][-1] + TickTime)
-        for _ in range(2): self.WaveData['SPI_DataName'].append(Name)
-
-    def I2C_Add_X(self, TickTime, Bit=0, AMP=0, Name="", CLKSLEEP=False, Init=False):
-        if Init == True:
-            for _ in range(4): self.WaveData['I2C_DataName'].append(Name)
-            for _ in range(4): self.WaveData['I2C_SCL'].append(AMP)
-            for _ in range(4): self.WaveData['I2C_SDA'].append(AMP)
-            for _ in range(4): self.WaveData['I2C_Time'].append(self.WaveData['I2C_Time'][-1] + TickTime)
-
-        else:
-            self.WaveData['I2C_SCL'].append(0.0)
-            self.WaveData['I2C_SCL'].append(0.0 if CLKSLEEP else AMP)
-            self.WaveData['I2C_SCL'].append(0.0 if CLKSLEEP else AMP)
-            self.WaveData['I2C_SCL'].append(0.0)
-
-            for _ in range(4):self.WaveData['I2C_DataName'].append(Name)
-
-            if str(Bit) == '1':
-                for _ in range(4):self.WaveData['I2C_SDA'].append(AMP)
-            elif str(Bit) == '0':
-                for _ in range(4):self.WaveData['I2C_SDA'].append(0.0)
-
-            for _ in range(4): self.WaveData['I2C_Time'].append(self.WaveData['I2C_Time'][-1]+TickTime)
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
 
     def I2C_Waveform(self, SheetName="", SequenceNumber=1, SequenceData=""):
         DataRate = self.Parameter[SheetName]['I2C Data Rate [kHz]']
         TickTime_4 = 1/(4 * DataRate * 1000)
         Voltage = float(self.Parameter[SheetName]['VIO [V]'])
 
-<<<<<<< HEAD
         self.WaveData[SheetName]['I2C_Time'].append(self.WaveData[SheetName]['LastTime'])
         self.WaveData[SheetName]['I2C_SCL'].append(Voltage)
         self.WaveData[SheetName]['I2C_SDA'].append(Voltage)
@@ -387,54 +232,10 @@ class Promira_Serial_Control:
         ### Makin Data bit Stream
         unm_of_data_bits = len(SequenceData['Sending Data']) * 4
         Data_bin = bin(int(str(SequenceData['Sending Data']), scale))[2:].zfill(unm_of_data_bits)
-=======
-        self.WaveData['I2C_Time'].append(self.LastTime)
-        self.WaveData['I2C_SCL'].append(Voltage)
-        self.WaveData['I2C_SDA'].append(Voltage)
-        self.WaveData['I2C_DataName'].append("")
-
-        self.I2C_Add_X(TickTime=TickTime_4, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", Init=True)
-
-        ###Making Address Bit Stream
-        scale = 16  ## equals to hexadecimal
-        ADDR = str(SequenceData['I2C Add']).replace(" ", "")
-        if ADDR[:2] == '0b':
-            ADDR = hex(int(ADDR[2:], 2))
-
-        num_of_bits = 7
-        Add_bin = bin(int(str(ADDR), scale))[2:].zfill(num_of_bits)
-
-        self.I2C_Add_X(TickTime=TickTime_4, Bit=0, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", CLKSLEEP=True)
-
-        for n, bit in enumerate(Add_bin):
-            dataname = 'Sq#'+str(SequenceNumber)+":" + 'ADDR['+str(6-n)+']'
-            self.I2C_Add_X(TickTime=TickTime_4, Bit=bit, AMP=Voltage, Name=dataname)
-
-        WR_BIT = 0 if "Write" in SequenceData['Direction'] else 1
-        self.I2C_Add_X(TickTime=TickTime_4, Bit=WR_BIT, AMP=Voltage, Name='Sq#'+str(SequenceNumber)+":" + "W/R")
-        ACK=0
-        self.I2C_Add_X(TickTime=TickTime_4, Bit=ACK, AMP=Voltage, Name='Sq#'+str(SequenceNumber)+":" + "ACK")
-
-        self.I2C_Add_X(TickTime=TickTime_4, Bit=1, AMP=Voltage, Name='Sq#'+str(SequenceNumber)+":",CLKSLEEP=True)
-        self.I2C_Add_X(TickTime=TickTime_4, Bit=0, AMP=Voltage, Name='Sq#'+str(SequenceNumber)+":",CLKSLEEP=True)
-
-        ### Makin Data bit Stream
-        scale = 16  ## equals to hexadecimal
-        DATA = SequenceData['Sending Data'].replace(" ", "")
-        if DATA[:2] == '0b':
-            DATA = hex(int(DATA[2:], 2))
-
-        unm_of_data_bits = len(DATA) * 4
-        Data_bin = bin(int(str(DATA), scale))[2:].zfill(unm_of_data_bits)
-
-        # unm_of_data_bits = len(SequenceData['Sending Data'].replace(" ", "")) * 4
-        # Data_bin = bin(int(str(SequenceData['Sending Data'].replace(" ", "")), scale))[2:].zfill(unm_of_data_bits)
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
 
         Bit_Counter = 7
         for n, bit in enumerate(Data_bin):
             dataname = 'Sq#'+str(SequenceNumber)+":" + 'DATA['+str(Bit_Counter)+']'
-<<<<<<< HEAD
             self.I2C_Add_X(Sheet= SheetName, TickTime=TickTime_4, Bit=bit, AMP=Voltage, Name=dataname)
             Bit_Counter -= 1
             if Bit_Counter < 0:
@@ -448,21 +249,6 @@ class Promira_Serial_Control:
 
         # self.WaveData['I2C_Time'] = ['{:.10f}'.format(n) for n in self.WaveData['I2C_Time']]
         return self.WaveData[SheetName]['I2C_Time'][-1]
-=======
-            self.I2C_Add_X(TickTime=TickTime_4, Bit=bit, AMP=Voltage, Name=dataname)
-            Bit_Counter -= 1
-            if Bit_Counter < 0:
-                Bit_Counter = 7
-                self.I2C_Add_X(TickTime=TickTime_4, Bit=ACK, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":" + "ACK")
-
-        STOP = 1
-        self.I2C_Add_X(TickTime=TickTime_4, Bit=STOP, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":" + "STOP", CLKSLEEP=True)
-        self.I2C_Add_X(TickTime=TickTime_4, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", Init=True)
-        print("")
-
-        # self.WaveData['I2C_Time'] = ['{:.10f}'.format(n) for n in self.WaveData['I2C_Time']]
-        return self.WaveData['I2C_Time'][-1]
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
 
     def SPI_Waveform(self, SheetName="", SequenceNumber=1, SequenceData=""):
         DataRate = self.Parameter[SheetName]['SPI Data Rate [kHz]']
@@ -483,7 +269,6 @@ class Promira_Serial_Control:
         BITORDER = True if 'msb' in self.Parameter[SheetName]['SPI Bit Order'] else False
         CS_POL = True if 'active_low' in self.Parameter[SheetName]['SPI CS Polarity'] else False
 
-<<<<<<< HEAD
         self.WaveData[SheetName]['SPI_Time'].append(self.WaveData[SheetName]['LastTime'])
         self.WaveData[SheetName]['SPI_MOSI'].append(Voltage)
         self.WaveData[SheetName]['SPI_DataName'].append("")
@@ -533,58 +318,6 @@ class Promira_Serial_Control:
 
         Master_TimeLine = np.linspace(start=0.0, stop=self.WaveData[Sheet]['LastTime'], num=int(self.WaveData[Sheet]['LastTime']//SamplingTick))
         self.MasterWaveData[Sheet] = dict(
-=======
-        self.WaveData['SPI_Time'].append(self.LastTime)
-        self.WaveData['SPI_MOSI'].append(Voltage)
-        self.WaveData['SPI_DataName'].append("")
-
-        if SPI_MODE == 0 or SPI_MODE == 1:
-            self.WaveData['SPI_SCLK'].append(0)
-        elif SPI_MODE == 2 or SPI_MODE == 3:
-            self.WaveData['SPI_SCLK'].append(Voltage)
-
-        ### Makin Data bit Stream
-        scale = 16  ## equals to hexadecimal
-        DATA = SequenceData['Sending Data'].replace(" ", "")
-        if DATA[:2] == '0b':
-            DATA = hex(int(DATA[2:],2))
-
-        unm_of_data_bits = len(DATA) * 4
-        Data_bin = bin(int(str(DATA), scale))[2:].zfill(unm_of_data_bits)
-
-        ### Initial
-        self.SPI_Add_X(TickTime=TickTime_2, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", CLKSLEEP=True)
-
-
-        if BITORDER:
-            Bit_Counter = 7
-            for n in reversed(range(len(Data_bin))):
-                bit = Data_bin[n]
-                dataname = 'Sq#' + str(SequenceNumber) + ":" + 'DATA[' + str(Bit_Counter) + ']'
-                self.SPI_Add_X(TickTime=TickTime_2, Bit=bit, AMP=Voltage, Name=dataname)
-                Bit_Counter -= 1
-                if Bit_Counter < 0: Bit_Counter = 7
-        else:
-            Bit_Counter = 0
-            for n in range(len(Data_bin)):
-                bit = Data_bin[n]
-                dataname = 'Sq#'+str(SequenceNumber)+":" + 'DATA['+str(Bit_Counter)+']'
-                self.SPI_Add_X(TickTime=TickTime_2, Bit=bit, AMP=Voltage, Name=dataname)
-                Bit_Counter += 1
-                if Bit_Counter > 6: Bit_Counter = 0
-
-        ### Closing
-        self.SPI_Add_X(TickTime=TickTime_2, AMP=Voltage, Name='Sq#' + str(SequenceNumber) + ":", CLKSLEEP=True)
-
-        return self.WaveData['SPI_Time'][-1]
-
-    def WaveFormReSamling(self):
-        SamplingTick = 1/SAMPLING_CLK
-
-        Master_TimeLine = np.linspace(start=0.0, stop=self.LastTime, num=int(self.LastTime//SamplingTick))
-
-        self.MasterWaveData = dict(
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             I2C_SCL=[],
             I2C_SDA=[],
             I2C_DataName=[],
@@ -595,7 +328,6 @@ class Promira_Serial_Control:
         )
 
         ### I2C Part
-<<<<<<< HEAD
         Data_ticknumber = 1
         for m_ticknumber in range(len(Master_TimeLine)):
             m_time = Master_TimeLine[m_ticknumber]
@@ -655,64 +387,6 @@ class Promira_Serial_Control:
         # self.WaveData = {}
 
         self.WaveData[Sheet] = dict(
-=======
-        if len(self.WaveData["I2C_SCL"]) != 0:
-            Data_ticknumber = 1
-            for m_ticknumber in range(len(Master_TimeLine)):
-                m_time = Master_TimeLine[m_ticknumber]
-
-                try:
-                    Data_time = self.WaveData["I2C_Time"][Data_ticknumber]
-                except:
-                    pass
-
-                if m_time <= Data_time:
-                    self.MasterWaveData["I2C_SCL"].append(self.WaveData["I2C_SCL"][Data_ticknumber-1])
-                    self.MasterWaveData["I2C_SDA"].append(self.WaveData["I2C_SDA"][Data_ticknumber-1])
-                    self.MasterWaveData["I2C_DataName"].append(self.WaveData["I2C_DataName"][Data_ticknumber-1])
-                else:
-                    try:
-                        self.MasterWaveData["I2C_SCL"].append(self.WaveData["I2C_SCL"][Data_ticknumber])
-                        self.MasterWaveData["I2C_SDA"].append(self.WaveData["I2C_SDA"][Data_ticknumber])
-                        self.MasterWaveData["I2C_DataName"].append(self.WaveData["I2C_DataName"][Data_ticknumber])
-                    except:
-                        self.MasterWaveData["I2C_SCL"].append(self.WaveData["I2C_SCL"][-1])
-                        self.MasterWaveData["I2C_SDA"].append(self.WaveData["I2C_SDA"][-1])
-                        self.MasterWaveData["I2C_DataName"].append(self.WaveData["I2C_DataName"][-1])
-                    Data_ticknumber += 1
-
-        ### SPI Part
-        if len(self.WaveData['SPI_SCLK']) != 0:
-
-            Data_ticknumber = 1
-            for m_ticknumber in range(len(Master_TimeLine)):
-                m_time = Master_TimeLine[m_ticknumber]
-
-                try:
-                    Data_time = self.WaveData["SPI_Time"][Data_ticknumber]
-                except:
-                    pass
-
-                if m_time <= Data_time:
-                    self.MasterWaveData["SPI_SCLK"].append(self.WaveData["SPI_SCLK"][Data_ticknumber - 1])
-                    self.MasterWaveData["SPI_MOSI"].append(self.WaveData["SPI_MOSI"][Data_ticknumber - 1])
-                    self.MasterWaveData["SPI_DataName"].append(self.WaveData["SPI_DataName"][Data_ticknumber - 1])
-                else:
-                    try:
-                        self.MasterWaveData["SPI_SCLK"].append(self.WaveData["SPI_SCLK"][Data_ticknumber])
-                        self.MasterWaveData["SPI_MOSI"].append(self.WaveData["SPI_MOSI"][Data_ticknumber])
-                        self.MasterWaveData["SPI_DataName"].append(self.WaveData["SPI_DataName"][Data_ticknumber])
-                    except:
-                        self.MasterWaveData["SPI_SCLK"].append(self.WaveData["SPI_SCLK"][-1])
-                        self.MasterWaveData["SPI_MOSI"].append(self.WaveData["SPI_MOSI"][-1])
-                        self.MasterWaveData["SPI_DataName"].append(self.WaveData["SPI_DataName"][-1])
-                    Data_ticknumber += 1
-
-        print("")
-
-    def WaveData_Genarater(self):
-        self.WaveData = dict(
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
             I2C_SCL= [],
             I2C_SDA= [],
             I2C_Time= [],
@@ -721,7 +395,6 @@ class Promira_Serial_Control:
             SPI_MOSI=[],
             SPI_Time=[],
             SPI_DataName= [],
-<<<<<<< HEAD
             LastTime = 0.0,
         )
 
@@ -739,30 +412,6 @@ class Promira_Serial_Control:
 
         self.WaveFormReSamling(Sheet=Sheet)
 
-=======
-        )
-
-        self.LastTime = 0.0
-
-        for Sheet in self.SheetNames:
-            if Sheet == "List":
-                break
-
-            for Sequence in self.SequenceData[Sheet]:
-                print(f"Making Seq#{Sequence} Wavefrom Data")
-                TextWriter(f"Making Seq#{Sequence} Wavefrom Data")
-
-                if self.SequenceData[Sheet][Sequence]['Mode'] == "I2C":
-                    self.LastTime = self.I2C_Waveform(SheetName=Sheet, SequenceNumber=Sequence, SequenceData=self.SequenceData[Sheet][Sequence])
-                    self.LastTime += float(float(self.Parameter[Sheet]['Sleep Duration [ms]']) / 1000)
-                elif self.SequenceData[Sheet][Sequence]['Mode'] == "SPI":
-                    self.LastTime = self.SPI_Waveform(SheetName=Sheet, SequenceNumber=Sequence, SequenceData=self.SequenceData[Sheet][Sequence])
-                    self.LastTime += float(self.Parameter[Sheet]['Sleep Duration [ms]']) / 1000
-
-        print(f"Data Re-Samplind")
-        TextWriter(f"Data Re-Sampling")
-        self.WaveFormReSamling()
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
     def SliderSetting(self, Unit='s', RangeList=range(10)):
         return dict(
             steps=[dict(
@@ -995,17 +644,9 @@ class Promira_Serial_Control:
                     XML_Data.append(
                         fr'  <spi_write ss="{SS}" count="{COUNT}" radix="{RADIX}"> {DATA} </spi_write>'
                     )
-<<<<<<< HEAD
                     XML_Data.append(
                         fr'  <sleep ms="{SLEEPTIME}"/>'
                     )
-=======
-
-                    if SLEEPTIME != 0:
-                        XML_Data.append(
-                            fr'  <sleep ms="{SLEEPTIME}"/>'
-                        )
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
 
                 ### I2C Data Sending
                 if self.SequenceData[SheetName][Sequence_Number]['Mode'] == "I2C":
@@ -1069,17 +710,9 @@ class Promira_Serial_Control:
                     XML_Data.append(
                         fr'  <i2c_write addr="{I2C_ADD}" count="{COUNT}" radix="{RADIX}"> {DATA} </i2c_write>'
                     )
-<<<<<<< HEAD
                     XML_Data.append(
                         fr'  <sleep ms="{SLEEPTIME}"/>'
                     )
-=======
-
-                    if SLEEPTIME != 0:
-                        XML_Data.append(
-                            fr'  <sleep ms="{SLEEPTIME}"/>'
-                        )
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
 
             if DIRECTION == 'Read':
                 XML_Data = self.XML_Data_Config(XML_Data=XML_Data,SheetName=SheetName, ModeInput=self.SequenceData[SheetName][Sequence_Number]['Mode'])
@@ -1118,17 +751,9 @@ class Promira_Serial_Control:
                     XML_Data.append(
                         fr'  <i2c_read addr="{I2C_ADD}" count="{COUNT}"/>'
                     )
-<<<<<<< HEAD
                     XML_Data.append(
                         fr'  <sleep ms="{SLEEPTIME}"/>'
                     )
-=======
-
-                    if SLEEPTIME != 0:
-                        XML_Data.append(
-                            fr'  <sleep ms="{SLEEPTIME}"/>'
-                        )
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
 
         return XML_Data
     def XML_File_Writer(self, FileLocation, SheetName):
@@ -1144,12 +769,9 @@ class Promira_Serial_Control:
 
     def SequenceRun(self):
         path_desktop = os.environ['USERPROFILE'] + str('\\Desktop\\')
-<<<<<<< HEAD
         self.PlotlyGraph = {}
         self.WaveData = {}
         self.MasterWaveData = {}
-=======
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
         for Sheet in self.SheetNames:
             if Sheet == 'List':
                 break
@@ -1174,11 +796,7 @@ if __name__ == "__main__":
     if os.path.exists(Path) == True:
         Promira = Promira_Serial_Control(FilePath=Path)
     else:
-<<<<<<< HEAD
         Path = r"C:\Users\pekep\OneDrive\Project\Python\AnalysisTool\DataAnalyzer\assets\Promira_Template.xlsx"
-=======
-        Path = r"C:\Users\IsaoYoneda\Desktop\Promira_Batch_files\Promira_Template.xlsx"
->>>>>>> 8fd085e6702696a35606f2521bad2c78bca1c03a
         if os.path.exists(Path) == True:
             Promira = Promira_Serial_Control(FilePath=Path)
             # Promira.GUI_Control()
