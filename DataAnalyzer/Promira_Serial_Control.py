@@ -671,8 +671,13 @@ class Promira_Serial_Control:
 
                     # GPIO Direction
                     DIRECTION_BIT = ""
-                    for bit in reversed(range(16)):
-                        Status = '1' if (str(GPIO_MAP[SS]) != bit) else '0'
+                    for GPIO_Number in reversed(range(16)):
+                        if GPIO_MAP[SS] == GPIO_Number:
+                            Status = '0'
+                        else:
+                            Status = '0' if 'nan' in str(self.SequenceData[SheetName][Sequence_Number]['GPIO_' + str(GPIO_Number)]) \
+                                     else '1'
+                        # Status = '1' if (str(GPIO_MAP[SS]) != GPIO_Number) else '0'
                         DIRECTION_BIT+=Status
 
                     GPIO_DIRECTION = hex(int(DIRECTION_BIT, 2))
@@ -688,6 +693,9 @@ class Promira_Serial_Control:
                     GPIO_OUTPUT = hex(int(OUTPUT_BIT, 2))
                     XML_Data.append(
                         fr'  <gpio_set value="{GPIO_OUTPUT}"/>'
+                    )
+                    XML_Data.append(
+                        fr'  <gpio_get/>"/>'
                     )
 
                     # SPI Data
@@ -711,10 +719,16 @@ class Promira_Serial_Control:
 
                 ### I2C Data Sending
                 if self.SequenceData[SheetName][Sequence_Number]['Mode'] == "I2C":
+
                     # GPIO Direction
                     DIRECTION_BIT = ""
-                    for bit in reversed(range(16)):
-                        Status = '1' if ((bit != 0) and (bit != 1)) else '0'
+                    for GPIO_Number in reversed(range(16)):
+                        if GPIO_Number < 2:
+                            Status = '0'
+                        else:
+                            Status = '0' if 'nan' in str(self.SequenceData[SheetName][Sequence_Number]['GPIO_' + str(GPIO_Number)]) \
+                                     else '1'
+                        # Status = '1' if (str(GPIO_MAP[SS]) != GPIO_Number) else '0'
                         DIRECTION_BIT+=Status
 
                     GPIO_DIRECTION = hex(int(DIRECTION_BIT, 2))
@@ -857,7 +871,7 @@ class Promira_Serial_Control:
         TextWriter(fr"Process Completed")
 
 if __name__ == "__main__":
-    Path = r"C:\Users\IsaoYoneda\Desktop\Promira_Batch_files\Promira_Input_Template.xlsx"
+    Path = r"C:\Users\IsaoYoneda\OneDrive - Photonic Inc\Python\AnalysisTool\DataAnalyzer\assets\Promira_Template.xlsx"
     if os.path.exists(Path) == True:
         Promira = Promira_Serial_Control(FilePath=Path)
     else:
