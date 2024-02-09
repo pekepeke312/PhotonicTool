@@ -41,7 +41,6 @@ SAMPLING_CLK = pow(10,7)
 
 class Promira_Serial_Control:
     def __init__(self, FilePath):
-
         self.MakingDirectory()
         self.CurrentMode = "GPIO"
         self.FileLocation = FilePath
@@ -617,12 +616,12 @@ class Promira_Serial_Control:
             )
 
         #GPIO Config
-        if GPIO == 1:
-            # GPIO_DIRECTION = 0 if "Input" in self.Parameter[sheetName]['GPIO Direction'] else 1
-            GPIO_PULLUP = 1 if "ON" in self.Parameter[SheetName]['GPIO Internal Pull Up'] else 0
-            XML_Data.append(
-                fr'  <gpio_config pullups="{GPIO_PULLUP}"/>'
-            )
+        # if GPIO == 1:
+        #     # GPIO_DIRECTION = 0 if "Input" in self.Parameter[sheetName]['GPIO Direction'] else 1
+        #     GPIO_PULLUP = 1 if "ON" in self.Parameter[SheetName]['GPIO Internal Pull Up'] else 0
+        #     XML_Data.append(
+        #         fr'  <gpio_config pullups="{GPIO_PULLUP}"/>'
+        #     )
 
         ## DataRate
         if SPI == 1:
@@ -651,6 +650,33 @@ class Promira_Serial_Control:
 
             if DIRECTION == 'Write':
                 XML_Data = self.XML_Data_Config(XML_Data=XML_Data,SheetName=SheetName, ModeInput=self.SequenceData[SheetName][Sequence_Number]['Mode'])
+
+                ### GPIO Mode
+                if self.SequenceData[SheetName][Sequence_Number]['Mode'] == "GPIO":
+                    # GPIO Direction
+                    DIRECTION_BIT = ""
+                    for GPIO_Number in reversed(range(16)):
+                        Status = '0' if 'nan' in str(self.SequenceData[SheetName][Sequence_Number]['GPIO_' + str(GPIO_Number)]) \
+                                     else '1'
+                        DIRECTION_BIT+=Status
+
+                    GPIO_DIRECTION = hex(int(DIRECTION_BIT, 2))
+                    XML_Data.append(
+                        fr'  <gpio_config direction="{GPIO_DIRECTION}"/>'
+                    )
+
+                    # GPIO Output
+                    OUTPUT_BIT = ""
+                    for bit in reversed(range(16)):
+                        Status = '1' if 'High' in str(self.SequenceData[SheetName][Sequence_Number]['GPIO_' + str(bit)]) else '0'
+                        OUTPUT_BIT+=Status
+                    GPIO_OUTPUT = hex(int(OUTPUT_BIT, 2))
+                    XML_Data.append(
+                        fr'  <gpio_get/>"/>'
+                    )
+                    XML_Data.append(
+                        fr'  <gpio_set value="{GPIO_OUTPUT}"/>'
+                    )
 
                 ### SPI Data Sending
                 if self.SequenceData[SheetName][Sequence_Number]['Mode'] == "SPI":
@@ -692,11 +718,12 @@ class Promira_Serial_Control:
                         OUTPUT_BIT+=Status
                     GPIO_OUTPUT = hex(int(OUTPUT_BIT, 2))
                     XML_Data.append(
-                        fr'  <gpio_set value="{GPIO_OUTPUT}"/>'
-                    )
-                    XML_Data.append(
                         fr'  <gpio_get/>"/>'
                     )
+                    XML_Data.append(
+                        fr'  <gpio_set value="{GPIO_OUTPUT}"/>'
+                    )
+
 
                     # SPI Data
                     if DATA[:2] == '0b':
@@ -743,11 +770,12 @@ class Promira_Serial_Control:
                         OUTPUT_BIT+=Status
                     GPIO_OUTPUT = hex(int(OUTPUT_BIT, 2))
                     XML_Data.append(
-                        fr'  <gpio_set value="{GPIO_OUTPUT}"/>'
-                    )
-                    XML_Data.append(
                         fr'  <gpio_get/>'
                     )
+                    XML_Data.append(
+                        fr'  <gpio_set value="{GPIO_OUTPUT}"/>'
+                    )
+
 
                     # I2C Data
                     I2C_ADD = str(self.SequenceData[SheetName][Sequence_Number]['I2C Add'])
@@ -835,13 +863,22 @@ class Promira_Serial_Control:
     def XML_File_Writer(self, FileLocation, SheetName):
         # WritingData = self.XML_Data_Config(SheetName)
         WritingData = ['<adapter>']
+        WritingData = self.GPIOInitial(WritingData, SheetName=SheetName)
         WritingData = self.XML_Data_Sequence(WritingData, SheetName=SheetName)
         WritingData.append('</adapter>')
+
         with open(FileLocation+'\\'+SheetName +'.XML', "w") as f:
             for row in WritingData:
                 f.write(str(row) + "\n")
 
         print("")
+
+    def GPIOInitial(self,XML_Data, SheetName = "Sheet1"):
+        GPIO_PULLUP = 1 if "ON" in self.Parameter[SheetName]['GPIO Internal Pull Up'] else 0
+        XML_Data.append(
+            fr'  <gpio_config pullups="{GPIO_PULLUP}"/>'
+        )
+        return XML_Data
 
     def SequenceRun(self):
         path_desktop = os.environ['USERPROFILE'] + str('\\Desktop\\')
