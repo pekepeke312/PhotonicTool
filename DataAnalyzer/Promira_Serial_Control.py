@@ -855,9 +855,10 @@ class Promira_Serial_Control:
                     XML_Data.append(
                         fr'  <i2c_read addr="{I2C_ADD}" count="{COUNT}"/>'
                     )
-                    XML_Data.append(
-                        fr'  <sleep ms="{SLEEPTIME}"/>'
-                    )
+                    if SLEEPTIME != 0:
+                        XML_Data.append(
+                            fr'  <sleep ms="{SLEEPTIME}"/>'
+                        )
 
         return XML_Data
     def XML_File_Writer(self, FileLocation, SheetName):
