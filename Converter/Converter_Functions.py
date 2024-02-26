@@ -2,6 +2,7 @@ import base64
 from urllib.parse import quote as urlquote
 
 import dash
+import pandas as pd
 from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output, State
@@ -28,11 +29,13 @@ from .assets import (
     Converter_PicToGraph,
     Converter_HistoryLog,
     Converter_ResonantFrequency,
+    Converter_UnitConversion,
 )
 
 from .smithchart import smithchart
 from TextWriter import TextWriter
 from .ResonantFrequency import ResonantFrequency
+from .UnitConversion import UnitConversion
 
 VSWR = GAMMA = RL = ML_dB = ML_P = RSource = RLoad = ''
 VSWR_ABS = GAMMA_ABS = ''
@@ -295,6 +298,12 @@ def Run_SmithChart(Z=50):
     RunningSmithChart = smithchart()#Z=50)
     return RunningSmithChart
 
+RunningUnitConversion = 0
+def Run_UnitConversion():
+    RunningUnitConversion = UnitConversion()
+    return RunningUnitConversion
+
+
 RunningResonantFrequency = 0
 def Run_ResonantFrequency():
     global RunningResonantFrequency
@@ -351,6 +360,7 @@ def ImageFileOpenner(uploaded_filenames, uploaded_file_contents):
 )
 def Converter_page(DataAnalyzer_Tabselection,pathname):
     global RunningSmithChart
+    global RunningUnitConversion
     if DataAnalyzer_Tabselection == 'Impedance':     #Default Page
         RunningSmithChart = Run_SmithChart(50)
         return Converter_Impedance.create_layout(app)
@@ -363,10 +373,188 @@ def Converter_page(DataAnalyzer_Tabselection,pathname):
 
     elif DataAnalyzer_Tabselection == 'ResonantFrequency':
         return Converter_ResonantFrequency.create_layout(app)
+
+    elif DataAnalyzer_Tabselection == 'Unit':
+        RunningUnitConversion = Run_UnitConversion()
+        return Converter_UnitConversion.create_layout(app)
+
     else:
         return html.Div("not yet")
 
+#### Unit Conversion Tool
 
+# @app.callback(
+#     [Output(component_id="DD_UnitConversion_Category", component_property="value"),
+#      Output(component_id="DD_UnitConversion_To", component_property="value"),
+#      Output(component_id="DD_UnitConversion_From", component_property="value"),
+#      ],
+#     [Input(component_id='DD_UnitConversion_Category', component_property='value'),
+#      Input(component_id='DD_UnitConversion_From', component_property='value'),
+#      Input(component_id='DD_UnitConversion_To', component_property='value'),
+#      ]
+# )
+# def Conversion_Value_Reset(Category,From, To):
+#     global RunningUnitConversion
+#     if Category == None or From == None or To == None:
+#         return ["","",""]
+
+@app.callback(
+    [Output(component_id="DD_UnitConversion_Category", component_property="options"),
+     Output(component_id="DD_UnitConversion_To", component_property="options"),
+     Output(component_id="DD_UnitConversion_From", component_property="options"),
+     Output(component_id="ID_Param_1_Name", component_property="children"),
+     Output(component_id="ID_Param_2_Name", component_property="children"),
+     Output(component_id="ID_Param_3_Name", component_property="children"),
+     Output(component_id="ID_Param_4_Name", component_property="children"),
+     Output(component_id="ID_Param_5_Name", component_property="children"),
+     ],
+    [Input(component_id='DD_UnitConversion_Category', component_property='value'),
+     Input(component_id='DD_UnitConversion_From', component_property='value'),
+     Input(component_id='DD_UnitConversion_To', component_property='value'),
+     ]
+)
+def Conversion_Name_update(Category,From, To):
+    global RunningUnitConversion
+    trigger_id = dash.callback_context.triggered[0]["prop_id"]
+    if RunningUnitConversion == 0:
+        print("Conversion List of To Update")
+        TextWriter("Conversion List of To Update")
+
+    if trigger_id ==  "DD_UnitConversion_Category.value":
+        RunningUnitConversion.FromList(Category=Category, To=To)
+        RunningUnitConversion.ToList(Category=Category, From=From)
+    elif trigger_id == "DD_UnitConversion_From.value":
+        RunningUnitConversion.CategoryList(From=From, To=To)
+        RunningUnitConversion.ToList(From=From, Category=Category)
+    elif trigger_id == "DD_UnitConversion_To.value":
+        RunningUnitConversion.CategoryList(To=To, From=From)
+        RunningUnitConversion.FromList(To=To, Category=Category)
+
+    ####--Name ------------
+    RunningUnitConversion.RemainintParts(To=To, From=From, Category=Category)
+    if RunningUnitConversion.GraphState:
+        RunningUnitConversion.InputWidgetUpdate()
+        Param1_Name = RunningUnitConversion.ParamList[0]
+        try:
+            Param2_Name = RunningUnitConversion.ParamList[1]
+        except:
+            Param2_Name = "Param2"
+        try:
+            Param3_Name = RunningUnitConversion.ParamList[2]
+        except:
+            Param3_Name = "Param3"
+        try:
+            Param4_Name = RunningUnitConversion.ParamList[3]
+        except:
+            Param4_Name = "Param4"
+        try:
+            Param5_Name = RunningUnitConversion.ParamList[4]
+        except:
+            Param5_Name = "Param5"
+    else:
+        Param1_Name = "Param1"
+        Param2_Name = "Param2"
+        Param3_Name = "Param3"
+        Param4_Name = "Param4"
+        Param5_Name = "Param5"
+
+    return [RunningUnitConversion.CategoryListData,
+            RunningUnitConversion.ToListData,
+            RunningUnitConversion.FromListData,
+            Param1_Name,
+            Param2_Name,
+            Param3_Name,
+            Param4_Name,
+            Param5_Name,
+            ]
+
+
+
+@app.callback(
+    [Output(component_id="ID_Param_1_MIN", component_property="value"),
+     Output(component_id="ID_Param_1_MAX", component_property="value"),
+     Output(component_id="ID_Param_2", component_property="value"),
+     Output(component_id="ID_Param_3", component_property="value"),
+     Output(component_id="ID_Param_4", component_property="value"),
+     Output(component_id="ID_Param_5", component_property="value"),
+
+     ],
+    [Input(component_id="ID_Param_1_Name", component_property="children"),
+     Input(component_id="ID_Param_2_Name", component_property="children"),
+     Input(component_id="ID_Param_3_Name", component_property="children"),
+     Input(component_id="ID_Param_4_Name", component_property="children"),
+     Input(component_id="ID_Param_5_Name", component_property="children"),
+     ]
+)
+def Conversion_Value_update(P1,P2,P3,P4,P5):
+    global RunningUnitConversion
+    if RunningUnitConversion.GraphState:
+        RunningUnitConversion.InputParameterValueUpdate()
+        Param1_min = float(RunningUnitConversion.Param1_min_value)
+        Param1_max = float(RunningUnitConversion.Param1_max_value)
+        try:
+            Param2 = float(RunningUnitConversion.Param2_value)
+        except:
+            Param2 = ""
+
+        try:
+            Param3 = float(RunningUnitConversion.Param3_value)
+        except:
+            Param3 = ""
+
+        try:
+            Param4 = float(RunningUnitConversion.Param4_value)
+        except:
+            Param4 = ""
+
+        try:
+            Param5 = float(RunningUnitConversion.Param5_value)
+        except:
+            Param5 = ""
+        return [
+            Param1_min,
+            Param1_max,
+            Param2,
+            Param3,
+            Param4,
+            Param5,
+        ]
+    else:
+        return [
+            dash.no_update,
+            dash.no_update,
+            dash.no_update,
+            dash.no_update,
+            dash.no_update,
+            dash.no_update,
+        ]
+
+@app.callback(
+    [Output(component_id="id_UnitConversion_Formula",component_property="figure"),
+     ],
+    [Input(component_id='ID_Param_1_MIN', component_property='value'),
+     Input(component_id='ID_Param_1_MAX', component_property='value'),
+     Input(component_id='ID_Param_2', component_property='value'),
+     Input(component_id='ID_Param_3', component_property='value'),
+     Input(component_id='ID_Param_4', component_property='value'),
+     Input(component_id='ID_Param_5', component_property='value'),
+     ]
+)
+def Latex_Graph_update(Param1_MIN,Param1_MAX,Param2,Param3,Param4,Param5):
+    global RunningUnitConversion
+    if RunningUnitConversion != 0:
+        if RunningUnitConversion.GraphState:
+            GraphData = RunningUnitConversion.RelationShipGraphGenerator(Param1_MAX=Param1_MAX,
+                                                                     Param1_MIN=Param1_MIN,
+                                                                     Param2=Param2,
+                                                                     Param3=Param3,
+                                                                     Param4=Param4,
+                                                                     Param5=Param5,
+                                                                     )
+    try:
+        return [GraphData]
+    except:
+        return [dash.no_update]
 
 ###### Resonant Frequency Tool
 RESO_FREQ= 0

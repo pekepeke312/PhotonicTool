@@ -37,8 +37,10 @@ def Converter_tab_menu():
     menu = html.Div(
         [
             dcc.Tabs(id='Converter_tabs-selection',
-                     value='ResonantFrequency',
+                     value='Unit',
                      children=[
+                         dcc.Tab(label='Unit', value='Unit', style=tab_style,
+                                 selected_style=tab_selected_style),
                          dcc.Tab(label='Resonant Frequency', value='ResonantFrequency', style=tab_style,
                                  selected_style=tab_selected_style),
                          dcc.Tab(label='Impedance', value='Impedance', style=tab_style,
