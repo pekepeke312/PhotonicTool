@@ -3,3 +3,4 @@
 15 Jan 2022: Added Impedance Matching Loss Calculator
 16 Jan 2022: Added "Pic-to-Graph" Tab Menu
 10 Nov 2023: Added Resonant Frequency Calculation Function
+24 Feb 2024: Added Unit Conversion Function

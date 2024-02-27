@@ -383,21 +383,6 @@ def Converter_page(DataAnalyzer_Tabselection,pathname):
 
 #### Unit Conversion Tool
 
-# @app.callback(
-#     [Output(component_id="DD_UnitConversion_Category", component_property="value"),
-#      Output(component_id="DD_UnitConversion_To", component_property="value"),
-#      Output(component_id="DD_UnitConversion_From", component_property="value"),
-#      ],
-#     [Input(component_id='DD_UnitConversion_Category', component_property='value'),
-#      Input(component_id='DD_UnitConversion_From', component_property='value'),
-#      Input(component_id='DD_UnitConversion_To', component_property='value'),
-#      ]
-# )
-# def Conversion_Value_Reset(Category,From, To):
-#     global RunningUnitConversion
-#     if Category == None or From == None or To == None:
-#         return ["","",""]
-
 @app.callback(
     [Output(component_id="DD_UnitConversion_Category", component_property="options"),
      Output(component_id="DD_UnitConversion_To", component_property="options"),

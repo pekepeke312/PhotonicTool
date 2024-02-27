@@ -125,7 +125,10 @@ class UnitConversion():
 
 		func = sympy.lambdify(P[0], Y)#, modules="numpy")
 
-		x_vals = np.linspace(float(Param1_MIN), float(Param1_MAX), DATALENGTH)
+		if "log" in str(self.SelectedData["X-Axis"]):
+			x_vals = np.logspace(np.log10(float(Param1_MIN)), np.log10(float(Param1_MAX)), DATALENGTH)
+		else:
+			x_vals = np.linspace(float(Param1_MIN), float(Param1_MAX), DATALENGTH)
 
 		try:
 			y_vals = func(x_vals)
@@ -134,10 +137,14 @@ class UnitConversion():
 
 		try:
 			CustomData = []
+			Converted_x = self.UnitConverter(x_vals,"")
+			Converted_y = self.UnitConverter(y_vals,"")
 			for n in range(DATALENGTH):
 				CustomData.append(
-					[x_vals[n],
-					 y_vals[n],
+					[Converted_x[0][n], #x_vals[n],
+					 Converted_x[1][n], #x-unit
+					 Converted_y[0][n], #y_vals[n],
+					 Converted_y[1][n],
 					 Param2,
 					 Param3,
 					 Param4,
@@ -152,39 +159,39 @@ class UnitConversion():
 				return []
 		except:
 			if len(self.ParamList) == 1:
-				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
-				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{self.SelectedData["From Unit"].values[0]}'
-				 		for [x, y, param2, param3, param4, param5] in CustomData]
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
+				 		for [x,x_unit, y,y_unit, param2, param3, param4, param5] in CustomData]
 
 			elif len(self.ParamList) == 2:
-				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
-						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{self.SelectedData["From Unit"].values[0]}'
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
-						for [x, y, param2,param3,param4,param5] in CustomData]
+				 		for [x,x_unit, y,y_unit, param2, param3, param4, param5] in CustomData]
 
 			elif len(self.ParamList) == 3:
-				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
-				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{self.SelectedData["From Unit"].values[0]}'						f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
-	  					f'<br>{self.ParamList[2]}: {param3:0.4f}'
-						for [x, y, param2,param3,param4,param5] in CustomData]
+						f'<br>{self.ParamList[2]}: {param3:0.4f}'
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5] in CustomData]
 
 			elif len(self.ParamList) == 4:
-				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
-				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{self.SelectedData["From Unit"].values[0]}'						f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'				f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
 						f'<br>{self.ParamList[3]}: {param4:0.4f}'
-						for [x, y, param2, param3, param4, param5] in CustomData]
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5] in CustomData]
 
 			elif len(self.ParamList) == 5:
-				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
-				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{self.SelectedData["From Unit"].values[0]}'						f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'					f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
 						f'<br>{self.ParamList[3]}: {param4:0.4f}'
 						f'<br>{self.ParamList[4]}: {param5:0.4f}'
-						for [x, y, param2, param3, param4, param5] in CustomData]
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5] in CustomData]
 
 			try:
 				self.Fig_2D.add_trace(
@@ -220,6 +227,27 @@ class UnitConversion():
 							)
 						)
 					)
+
+					if "log" in str(self.SelectedData["Y-Axis"].values):
+						Scale_Y = "log"
+					else:
+						Scale_Y = None
+
+					self.Fig_2D.update_yaxes(
+						type=Scale_Y,
+						exponentformat="SI",
+					)
+
+					if "log" in str(self.SelectedData["X-Axis"].values):
+						Scale_X = "log"
+					else:
+						Scale_X = None
+
+					self.Fig_2D.update_xaxes(
+						type=Scale_X,
+						exponentformat="SI",
+					)
+
 				except:
 					self.Fig_2D.update_layout(
 						dict(
@@ -233,10 +261,58 @@ class UnitConversion():
 							)
 						)
 					)
+
 				return self.Fig_2D
 			except:
 				pass
 
+	def UnitConverter(self, Values_list, Unit):
+		Digits = 6
+		New_Valuelist = []
+		New_Unitlist = []
+		for Value in Values_list:
+			absValue = abs(Value)
+			if absValue >= pow(10, -15) and absValue < (pow(10, -12)):
+				New_Valuelist.append(round(Value / pow(10, -15), Digits))
+				New_Unitlist.append('f' + Unit)
+
+			elif absValue >= pow(10, -12) and absValue < (pow(10, -9)):
+				New_Valuelist.append(round(Value / pow(10, -12), Digits))
+				New_Unitlist.append('p' + Unit)
+
+			elif absValue >= pow(10, -9) and absValue < (pow(10, -6)):
+				New_Valuelist.append(round(Value / pow(10, -9), Digits))
+				New_Unitlist.append('n' + Unit)
+
+			elif absValue >= pow(10, -6) and absValue < (pow(10, -3)):
+				New_Valuelist.append(round(Value / pow(10, -6), Digits))
+				New_Unitlist.append("\u03BC" + Unit)
+
+			elif absValue >= pow(10, -3) and absValue < (pow(10, 0)):
+				New_Valuelist.append(round(Value / pow(10, -3), Digits))
+				New_Unitlist.append("m" + Unit)
+
+			elif absValue >= pow(10, 0) and absValue < (pow(10, 3)):
+				New_Valuelist.append(round(Value / pow(10, 0), Digits))
+				New_Unitlist.append("" + Unit)
+
+			elif absValue >= pow(10, 3) and absValue < (pow(10, 6)):
+				New_Valuelist.append(round(Value / pow(10, 3), Digits))
+				New_Unitlist.append("k" + Unit)
+
+			elif absValue >= pow(10, 6) and absValue < (pow(10, 9)):
+				New_Valuelist.append(round(Value / pow(10, 6), Digits))
+				New_Unitlist.append("M" + Unit)
+
+			elif absValue >= pow(10, 9) and absValue < (pow(10, 12)):
+				New_Valuelist.append(round(Value / pow(10, 9), Digits))
+				New_Unitlist.append("G" + Unit)
+
+			elif absValue >= pow(10, 12) and absValue < (pow(10, 15)):
+				New_Valuelist.append(round(Value / pow(10, 12), Digits))
+				New_Unitlist.append("T" + Unit)
+
+		return [New_Valuelist, New_Unitlist]
 
 	def DatabaseLoader(self, Path=""):		# This funtion will create self.DataBase_PM
 		starttime = time.time()
