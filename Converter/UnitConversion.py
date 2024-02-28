@@ -211,7 +211,7 @@ class UnitConversion():
 				self.Fig_2D.update_layout(
 					xaxis_title=Data["From"].values[0],
 					yaxis_title=Data["To"].values[0],
-					margin=dict(l=20, r=20, t=50, b=20),
+					margin=dict(l=20, r=20, t=75, b=20),
 				)
 
 				try:
