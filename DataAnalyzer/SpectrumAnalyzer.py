@@ -59,6 +59,7 @@ class SpectrumAnalyzer:
 									 header=None,
 									 sep='\t\s',
    									 nrows=25,
+									 engine='python',
 									)
 			if ',Start,Increment' in str(HeaderCheck.values[0]):
 				HeaderNames = str(HeaderCheck.values[0]).split(',')
@@ -167,6 +168,20 @@ class SpectrumAnalyzer:
 				self.Data_Unit = np.array(self.Table.iloc[self.UnitRow, :])
 
 				DataStartRow = max(self.HeaderRow, self.UnitRow) + 1
+				if str(type(self.Data_Label[1])) == "<class 'numpy.float64'>":
+					self.TraceNumbers = len(self.Data_Label) - 1
+					self.Data_Label = ['Second']
+					for n in range(1, self.Table.ndim):
+						self.Data_Label.append('Trace#' + str(n))
+
+					self.Data_Label = np.array(self.Data_Label)
+					# self.Data_Label = np.insert(self.Data_Label, 0, 'Second')
+					self.Data_Unit = ['Second']
+					for n in range(self.TraceNumbers):
+						self.Data_Unit.append('Volt')
+					DataStartRow = 0
+
+
 
 				#self.Table = self.Table.dropna(how='any')  # ver.2.1 drop any NaN data
 

@@ -1,3 +1,16 @@
+--- Loading PartInformation File ---
+Loading from C:\Users\IsaoYoneda\Perforce\iyoneda\referenceTechLibDepot\Part Information\Part Number Tracking.xlsx" started
+Loading the all address of Database files Completed in 0.0384s
 --- Loading Database File ---
-Loading the all address of Database files Completed in 0.037s
-Remaining Possible Conditions are 84 cases
+Loading the all address of Database files Completed in 0.164s
+Remaining Possible Conditions are 122 cases
+Remaining Possible Conditions are 2 cases
+Remaining Possible Condition is only 1 case
+Remaining Possible Condition is only 1 case
+Remaining Possible Condition is only 1 case
+Loading  Completed in 12.3s
+Making Address files table Completed in 0.0389s
+Remaining Possible Condition is only 1 case
+Remaining Possible Condition is only 1 case
+Remaining Possible Condition is only 1 case
+Remaining Possible Condition is only 1 case
