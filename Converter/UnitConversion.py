@@ -178,7 +178,7 @@ class UnitConversion():
 
 			elif len(self.ParamList) == 4:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
-						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'				f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
 						f'<br>{self.ParamList[3]}: {param4:0.4f}'
@@ -186,7 +186,7 @@ class UnitConversion():
 
 			elif len(self.ParamList) == 5:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
-						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'					f'<br>{self.SelectedData["To"].values[0]}: {y:0.4f}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
 						f'<br>{self.ParamList[3]}: {param4:0.4f}'
