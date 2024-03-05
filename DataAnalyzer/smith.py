@@ -226,7 +226,8 @@ class smith:
                 text=[f'Freq: {FreqUnit}Hz <br>S11: {S11:0.4f}dB<br>VSWR: {S11VS:0.4f}' for [Freq,FreqUnit, S11, S12, S21, S22, S11VS, S22VS] in customdata],
 				hoverinfo='text',
 				name='S11',
-				line=dict(color=ColourTable[0])
+				line=dict(color=ColourTable[0]),
+				# exponentformat = "SI",
 			),
         ),
 
@@ -1513,6 +1514,25 @@ class smith:
 			col=3,
 			range = [0,5],
 		)
+
+		self.RF_Check_Smith_2D.update_xaxes(
+			row=1,
+			col=1,
+			exponentformat="SI",
+		)
+
+		self.RF_Check_Smith_2D.update_xaxes(
+			row=1,
+			col=3,
+			exponentformat="SI",
+		)
+
+		self.RF_Check_Smith_2D.update_xaxes(
+			row=1,
+			col=5,
+			exponentformat="SI",
+		)
+
 
 		for n in [1, 4]:
 			self.RF_Check_Smith_2D.update_xaxes(row=2, col=n,
