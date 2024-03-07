@@ -11,7 +11,7 @@ if __name__ != "__main__":
 else:
 	PartInfoDatabaseAddress = "assets//UnitConversion.xlsx"
 
-DATALENGTH = 101
+DATALENGTH = 1001
 
 class UnitConversion():
 	def __init__(self, DebugMode=False):
@@ -76,9 +76,12 @@ class UnitConversion():
 		self.Param3_value = Data["Default Param3"]
 		self.Param4_value = Data["Default Param4"]
 		self.Param5_value = Data["Default Param5"]
+		self.Param6_value = Data["Default Param6"]
+		self.Param7_value = Data["Default Param7"]
+		self.Param8_value = Data["Default Param8"]
 		print("")
 
-	def RelationShipGraphGenerator(self, Param1_MAX=100, Param1_MIN=0, Param2="", Param3="", Param4="", Param5=""):
+	def RelationShipGraphGenerator(self, Param1_MAX=100, Param1_MIN=0, Param2="", Param3="", Param4="", Param5="", Param6="", Param7="" , Param8=""):
 		self.Fig_2D = go.Figure()
 
 		Param1_MAX = float(Param1_MAX)
@@ -104,26 +107,54 @@ class UnitConversion():
 		except:
 			Param5 = ""
 
+		try:
+			Param6 = float(Param6)
+		except:
+			Param6 = ""
+
+		try:
+			Param7 = float(Param7)
+		except:
+			Param7 = ""
+
+		try:
+			Param8 = float(Param8)
+		except:
+			Param8 = ""
+
 		Data = self.SelectedData
 		P = self.SympyParameterList
 
-		Y = eval(Data["Sympy Formula"].values[0])
+		try:
+			Y = eval(Data["Sympy Formula"].values[0])
 
-		# Param2
-		if Param2:
-			Y = Y.subs(P[1], Param2)
+			# Param2
+			if Param2:
+				Y = Y.subs(P[1], Param2)
 
-		if Param3:
-			Y = Y.subs(P[2], Param3)
+			if Param3:
+				Y = Y.subs(P[2], Param3)
 
-		if Param4:
-			Y = Y.subs(P[3], Param4)
+			if Param4:
+				Y = Y.subs(P[3], Param4)
 
-		if Param5:
-			Y = Y.subs(P[4], Param5)
+			if Param5:
+				Y = Y.subs(P[4], Param5)
+
+			if Param6:
+				Y = Y.subs(P[5], Param6)
+
+			if Param7:
+				Y = Y.subs(P[6], Param7)
+
+			if Param8:
+				Y = Y.subs(P[7], Param8)
+
+			func = sympy.lambdify(P[0], Y)  # , modules="numpy")
+		except:
+			pass
 
 
-		func = sympy.lambdify(P[0], Y)#, modules="numpy")
 
 		if "log" in str(self.SelectedData["X-Axis"]):
 			x_vals = np.logspace(np.log10(float(Param1_MIN)), np.log10(float(Param1_MAX)), DATALENGTH)
@@ -149,6 +180,9 @@ class UnitConversion():
 					 Param3,
 					 Param4,
 					 Param5,
+					 Param6,
+					 Param7,
+					 Param8,
 					 ]
 				)  # for Data
 		except:
@@ -161,20 +195,21 @@ class UnitConversion():
 			if len(self.ParamList) == 1:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
 				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
-				 		for [x,x_unit, y,y_unit, param2, param3, param4, param5] in CustomData]
+				 		for [x,x_unit, y,y_unit, param2, param3, param4, param5, param6, param7, param8,] in CustomData]
 
 			elif len(self.ParamList) == 2:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
 				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
-				 		for [x,x_unit, y,y_unit, param2, param3, param4, param5] in CustomData]
+				 		for [x,x_unit, y,y_unit, param2, param3, param4, param5, param6, param7, param8,] in CustomData]
 
 			elif len(self.ParamList) == 3:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
 				 		f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
-						for [x, x_unit, y, y_unit, param2, param3, param4, param5] in CustomData]
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5, param6, param7, param8, ] in
+						CustomData]
 
 			elif len(self.ParamList) == 4:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
@@ -182,7 +217,8 @@ class UnitConversion():
 						f'<br>{self.ParamList[1]}: {param2:0.4f}'
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
 						f'<br>{self.ParamList[3]}: {param4:0.4f}'
-						for [x, x_unit, y, y_unit, param2, param3, param4, param5] in CustomData]
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5, param6, param7, param8, ] in
+						CustomData]
 
 			elif len(self.ParamList) == 5:
 				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
@@ -191,7 +227,45 @@ class UnitConversion():
 						f'<br>{self.ParamList[2]}: {param3:0.4f}'
 						f'<br>{self.ParamList[3]}: {param4:0.4f}'
 						f'<br>{self.ParamList[4]}: {param5:0.4f}'
-						for [x, x_unit, y, y_unit, param2, param3, param4, param5] in CustomData]
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5, param6, param7, param8, ] in
+						CustomData]
+
+			elif len(self.ParamList) == 6:
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
+						f'<br>{self.ParamList[1]}: {param2:0.4f}'
+						f'<br>{self.ParamList[2]}: {param3:0.4f}'
+						f'<br>{self.ParamList[3]}: {param4:0.4f}'
+						f'<br>{self.ParamList[4]}: {param5:0.4f}'
+						f'<br>{self.ParamList[5]}: {param6:0.4f}'
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5, param6, param7, param8, ] in
+						CustomData]
+
+			elif len(self.ParamList) == 7:
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
+						f'<br>{self.ParamList[1]}: {param2:0.4f}'
+						f'<br>{self.ParamList[2]}: {param3:0.4f}'
+						f'<br>{self.ParamList[3]}: {param4:0.4f}'
+						f'<br>{self.ParamList[4]}: {param5:0.4f}'
+						f'<br>{self.ParamList[5]}: {param6:0.4f}'
+						f'<br>{self.ParamList[6]}: {param7:0.4f}'
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5, param6, param7, param8, ] in
+						CustomData]
+
+			elif len(self.ParamList) == 8:
+				text = [f'{self.SelectedData["To"].values[0]}: {y:0.4f}{y_unit}{self.SelectedData["To Unit"].values[0]}'
+						f'<br>{self.SelectedData["From"].values[0]}: {x:0.4f}{x_unit}{self.SelectedData["From Unit"].values[0]}'
+						f'<br>{self.ParamList[1]}: {param2:0.4f}'
+						f'<br>{self.ParamList[2]}: {param3:0.4f}'
+						f'<br>{self.ParamList[3]}: {param4:0.4f}'
+						f'<br>{self.ParamList[4]}: {param5:0.4f}'
+						f'<br>{self.ParamList[5]}: {param6:0.4f}'
+						f'<br>{self.ParamList[6]}: {param7:0.4f}'
+						f'<br>{self.ParamList[7]}: {param8:0.4f}'
+						for [x, x_unit, y, y_unit, param2, param3, param4, param5, param6, param7, param8, ] in
+						CustomData]
+
 
 			try:
 				self.Fig_2D.add_trace(
@@ -211,7 +285,8 @@ class UnitConversion():
 				self.Fig_2D.update_layout(
 					xaxis_title=Data["From"].values[0],
 					yaxis_title=Data["To"].values[0],
-					margin=dict(l=20, r=20, t=75, b=20),
+					autosize=True,
+					margin=dict(l=20, r=20, t=100, b=20),
 				)
 
 				try:

@@ -196,6 +196,60 @@ def create_layout(app):
 								),
 
 							], className='row', ),
+							html.Div([
+								html.Div([
+									html.Label("Param6",
+											   id='ID_Param_6_Name'),
+								], className='four columns',
+									id='ID_Param_6_Name_Wrapper',
+								),
+								html.Div([
+									dcc.Input(id='ID_Param_6',
+											  debounce=True,
+											  style={'textAlign': TEXT_POSITION,
+													 'width': '75%'},
+											  ),
+								], className='eight columns',
+									id='ID_Param_6_Wrapper',
+								),
+
+							], className='row', ),
+							html.Div([
+								html.Div([
+									html.Label("Param7",
+											   id='ID_Param_7_Name'),
+								], className='four columns',
+									id='ID_Param_7_Name_Wrapper',
+								),
+								html.Div([
+									dcc.Input(id='ID_Param_7',
+											  debounce=True,
+											  style={'textAlign': TEXT_POSITION,
+													 'width': '75%'},
+											  ),
+								], className='eight columns',
+									id='ID_Param_7_Wrapper',
+								),
+
+							], className='row', ),
+							html.Div([
+								html.Div([
+									html.Label("Param8",
+											   id='ID_Param_8_Name'),
+								], className='four columns',
+									id='ID_Param_8_Name_Wrapper',
+								),
+								html.Div([
+									dcc.Input(id='ID_Param_8',
+											  debounce=True,
+											  style={'textAlign': TEXT_POSITION,
+													 'width': '75%'},
+											  ),
+								], className='eight columns',
+									id='ID_Param_8_Wrapper',
+								),
+
+							], className='row', ),
 						],
 						style={"border": "1px black dashed",
 							   "margin": "5px",
@@ -217,7 +271,8 @@ def create_layout(app):
 								},
 						mathjax=True,
 					),
-				], className='seven columns'),
+				], className='seven columns',
+				),
 
 
 			],className='row',

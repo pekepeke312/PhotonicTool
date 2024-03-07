@@ -392,6 +392,9 @@ def Converter_page(DataAnalyzer_Tabselection,pathname):
      Output(component_id="ID_Param_3_Name", component_property="children"),
      Output(component_id="ID_Param_4_Name", component_property="children"),
      Output(component_id="ID_Param_5_Name", component_property="children"),
+     Output(component_id="ID_Param_6_Name", component_property="children"),
+     Output(component_id="ID_Param_7_Name", component_property="children"),
+     Output(component_id="ID_Param_8_Name", component_property="children"),
      ],
     [Input(component_id='DD_UnitConversion_Category', component_property='value'),
      Input(component_id='DD_UnitConversion_From', component_property='value'),
@@ -436,12 +439,27 @@ def Conversion_Name_update(Category,From, To):
             Param5_Name = RunningUnitConversion.ParamList[4]
         except:
             Param5_Name = "Param5"
+        try:
+            Param6_Name = RunningUnitConversion.ParamList[5]
+        except:
+            Param6_Name = "Param6"
+        try:
+            Param7_Name = RunningUnitConversion.ParamList[6]
+        except:
+            Param7_Name = "Param7"
+        try:
+            Param8_Name = RunningUnitConversion.ParamList[7]
+        except:
+            Param8_Name = "Param8"
     else:
         Param1_Name = "Param1"
         Param2_Name = "Param2"
         Param3_Name = "Param3"
         Param4_Name = "Param4"
         Param5_Name = "Param5"
+        Param6_Name = "Param6"
+        Param7_Name = "Param7"
+        Param8_Name = "Param8"
 
     return [RunningUnitConversion.CategoryListData,
             RunningUnitConversion.ToListData,
@@ -451,6 +469,9 @@ def Conversion_Name_update(Category,From, To):
             Param3_Name,
             Param4_Name,
             Param5_Name,
+            Param6_Name,
+            Param7_Name,
+            Param8_Name,
             ]
 
 
@@ -462,6 +483,9 @@ def Conversion_Name_update(Category,From, To):
      Output(component_id="ID_Param_3", component_property="value"),
      Output(component_id="ID_Param_4", component_property="value"),
      Output(component_id="ID_Param_5", component_property="value"),
+     Output(component_id="ID_Param_6", component_property="value"),
+     Output(component_id="ID_Param_7", component_property="value"),
+     Output(component_id="ID_Param_8", component_property="value"),
 
      ],
     [Input(component_id="ID_Param_1_Name", component_property="children"),
@@ -469,9 +493,12 @@ def Conversion_Name_update(Category,From, To):
      Input(component_id="ID_Param_3_Name", component_property="children"),
      Input(component_id="ID_Param_4_Name", component_property="children"),
      Input(component_id="ID_Param_5_Name", component_property="children"),
+     Input(component_id="ID_Param_6_Name", component_property="children"),
+     Input(component_id="ID_Param_7_Name", component_property="children"),
+     Input(component_id="ID_Param_8_Name", component_property="children"),
      ]
 )
-def Conversion_Value_update(P1,P2,P3,P4,P5):
+def Conversion_Value_update(P1,P2,P3,P4,P5,P6,P7,P8):
     global RunningUnitConversion
     if RunningUnitConversion.GraphState:
         RunningUnitConversion.InputParameterValueUpdate()
@@ -496,6 +523,21 @@ def Conversion_Value_update(P1,P2,P3,P4,P5):
             Param5 = float(RunningUnitConversion.Param5_value)
         except:
             Param5 = ""
+
+        try:
+            Param6 = float(RunningUnitConversion.Param6_value)
+        except:
+            Param6 = ""
+
+        try:
+            Param7 = float(RunningUnitConversion.Param7_value)
+        except:
+            Param7 = ""
+
+        try:
+            Param8 = float(RunningUnitConversion.Param8_value)
+        except:
+            Param8 = ""
         return [
             Param1_min,
             Param1_max,
@@ -503,9 +545,15 @@ def Conversion_Value_update(P1,P2,P3,P4,P5):
             Param3,
             Param4,
             Param5,
+            Param6,
+            Param7,
+            Param8,
         ]
     else:
         return [
+            dash.no_update,
+            dash.no_update,
+            dash.no_update,
             dash.no_update,
             dash.no_update,
             dash.no_update,
@@ -523,9 +571,12 @@ def Conversion_Value_update(P1,P2,P3,P4,P5):
      Input(component_id='ID_Param_3', component_property='value'),
      Input(component_id='ID_Param_4', component_property='value'),
      Input(component_id='ID_Param_5', component_property='value'),
+     Input(component_id='ID_Param_6', component_property='value'),
+     Input(component_id='ID_Param_7', component_property='value'),
+     Input(component_id='ID_Param_8', component_property='value'),
      ]
 )
-def Latex_Graph_update(Param1_MIN,Param1_MAX,Param2,Param3,Param4,Param5):
+def Latex_Graph_update(Param1_MIN,Param1_MAX,Param2,Param3,Param4,Param5,Param6,Param7,Param8):
     global RunningUnitConversion
     if RunningUnitConversion != 0:
         if RunningUnitConversion.GraphState:
@@ -535,6 +586,9 @@ def Latex_Graph_update(Param1_MIN,Param1_MAX,Param2,Param3,Param4,Param5):
                                                                      Param3=Param3,
                                                                      Param4=Param4,
                                                                      Param5=Param5,
+                                                                     Param6=Param6,
+                                                                     Param7=Param7,
+                                                                     Param8=Param8,
                                                                      )
     try:
         return [GraphData]
