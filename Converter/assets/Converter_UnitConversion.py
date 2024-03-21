@@ -100,7 +100,7 @@ def create_layout(app):
 								),
 								html.Div([
 									dcc.Input(id='ID_Param_1_MIN',
-											  # value=0,
+											  value="",
 											  debounce=True,
 											  style={'textAlign': TEXT_POSITION,
 													 'width': '75%'},
@@ -268,6 +268,8 @@ def create_layout(app):
 						id="id_UnitConversion_Formula",
 						style={"display": "true",
 								'textAlign': 'center',
+							   # 'width': '95vw',
+							   # 'height': '100vh',
 								},
 						mathjax=True,
 					),

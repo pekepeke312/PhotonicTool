@@ -49,6 +49,8 @@ class SpectrumAnalyzer:
 		print("This is call faunction.")
 		return self.Path
 
+	#@jit
+	# @njit
 	def CSV_Read(self):
 		starttime = time.time()
 		print("Data loading got started...")
@@ -302,18 +304,18 @@ class SpectrumAnalyzer:
 					)
 				)
 				# Array = templist
-				Array = templist.astype(np.float)
+				Array = templist.astype(np.float32)
 				RMS.append(
 					"{:.4}".format(
 						Decimal(
-							np.sqrt(np.mean(Array ** 2))
+							np.sqrt(np.mean(Array ** 2).item())
 						)
 					)
 				)
 				Average.append(
 					"{:.4}".format(
 						Decimal(
-							np.average(Array)
+							np.average(Array).item()
 						)
 					)
 				)

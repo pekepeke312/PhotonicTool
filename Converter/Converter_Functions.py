@@ -13,7 +13,7 @@ import math
 import time
 import os
 
-from .PicToGraph import PicToGraph
+# from .PicToGraph import PicToGraph
 
 import sys
 import codecs
@@ -578,7 +578,7 @@ def Conversion_Value_update(P1,P2,P3,P4,P5,P6,P7,P8):
 )
 def Latex_Graph_update(Param1_MIN,Param1_MAX,Param2,Param3,Param4,Param5,Param6,Param7,Param8):
     global RunningUnitConversion
-    if RunningUnitConversion != 0:
+    if RunningUnitConversion != 0 and Param1_MIN !="":
         if RunningUnitConversion.GraphState:
             GraphData = RunningUnitConversion.RelationShipGraphGenerator(Param1_MAX=Param1_MAX,
                                                                      Param1_MIN=Param1_MIN,

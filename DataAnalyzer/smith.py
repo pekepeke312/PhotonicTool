@@ -41,7 +41,7 @@ class smith:
 				base = pow(U,2) - 2*U + pow(V,2) +1
 				re = -1* (pow(U,2) + pow(V,2) - 1) / base
 				imag = (2*V)/base
-				list.append(complex(re+imag*1.0j))
+				list.append(np.complex32(re+imag*1.0j))
 			return list
 		else:
 			[U, V] = UVList

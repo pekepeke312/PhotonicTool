@@ -286,7 +286,7 @@ class UnitConversion():
 					xaxis_title=Data["From"].values[0],
 					yaxis_title=Data["To"].values[0],
 					autosize=True,
-					margin=dict(l=20, r=20, t=100, b=20),
+					margin=dict(l=20, r=20, t=150, b=20),
 				)
 
 				try:
