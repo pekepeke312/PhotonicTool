@@ -1,0 +1,7 @@
+--Update History Log--
+7 May 2024: Added "Cheatsheet" Tab Menu
+7 May 2024: Added Git cheatsheet
+7 May 2024: Added Altium cheatsheet
+7 May 2024: Added Python3 cheatsheet
+7 May 2024: Added Windows10 cheatsheet
+7 May 2024: Added Linux cheatsheet
