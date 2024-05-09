@@ -24,6 +24,9 @@ from Converter.Converter_Contents import (
     Converter_layout,
 )
 
+from CheatSheet.CheatSheet_Contents import (
+    CheatSheet_layout,
+)
 
 from Top_Assets.Top_Level_page_HistoryLog import (
     Analysis_Tool_History_layout,
@@ -68,6 +71,11 @@ def tab_menu():
                                  selected_style=tab_selected_style),
 
                          dcc.Tab(label='Converter Tool', value='Converter', style=tab_style,
+                                 selected_style=tab_selected_style),
+
+                         dcc.Tab(label='Cheat Sheet',
+                                 value='CheatSheet',
+                                 style=tab_style,
                                  selected_style=tab_selected_style),
 
                          dcc.Tab(label='Revision History', value='Revision History', style=tab_style,
@@ -115,6 +123,9 @@ def display_page(Tabselection,pathname):
 
     elif Tabselection == 'Converter':
         return Converter_layout(app)
+    
+    elif Tabselection == 'CheatSheet':
+        return CheatSheet_layout(app)
 
     elif Tabselection == 'Revision History':
         return Analysis_Tool_History_layout(app)
