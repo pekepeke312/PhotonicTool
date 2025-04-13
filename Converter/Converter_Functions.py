@@ -30,12 +30,14 @@ from .assets import (
     Converter_HistoryLog,
     Converter_ResonantFrequency,
     Converter_UnitConversion,
+    Converter_PCB_Pattern_Impedance,
 )
 
 from .smithchart import smithchart
-from TextWriter import TextWriter
+from textwriter import textwriter
 from .ResonantFrequency import ResonantFrequency
 from .UnitConversion import UnitConversion
+from .PCB_Pattern_Width_Calculator import PCB_Pattern_Width
 
 VSWR = GAMMA = RL = ML_dB = ML_P = RSource = RLoad = ''
 VSWR_ABS = GAMMA_ABS = ''
@@ -53,7 +55,7 @@ def RL_Update(GAMMA):
                 RL = round(20 * math.log10(float(abs(GAMMA))), 3)
         except:
             print(f"Return Loss Calculation Error with GAMMA = {GAMMA}")
-            TextWriter(f"Return Loss Calculation Error with GAMMA = {GAMMA}")
+            textwriter(f"Return Loss Calculation Error with GAMMA = {GAMMA}")
     return RL
 
 def ML_dB_Update(GAMMA):
@@ -115,7 +117,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             ML_P = ML_P_Update(ML_dB)
         except:
             print("Rsource = {}: InputError".format(rsource))
-            TextWriter("Rsource = {}: InputError".format(rsource))
+            textwriter("Rsource = {}: InputError".format(rsource))
 
     elif trigger_id == "IMP_LOAD_IMP_INPUT.value":
         if rload == None or rload == "":
@@ -133,7 +135,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             ML_P = ML_P_Update(ML_dB)
         except:
             print("Rload = {}: InputError".format(rload))
-            TextWriter("Rload = {}: InputError".format(rload))
+            textwriter("Rload = {}: InputError".format(rload))
 
     elif trigger_id == "ID_IMP_VSWR.value":
         if vswr != "" and vswr != None:
@@ -153,7 +155,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             ML_P = ML_P_Update(ML_dB)
         except:
             print("VSWR = {}: InputError".format(vswr))
-            TextWriter("VSWR = {}: InputError".format(vswr))
+            textwriter("VSWR = {}: InputError".format(vswr))
 
     if trigger_id == "ID_IMP_GAMMA.value":
         if gamma != "" and gamma != None:
@@ -176,7 +178,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             ML_P = ML_P_Update(ML_dB)
         except:
             print("GAMMA = {}: InputError".format(gamma))
-            TextWriter("GAMMA = {}: InputError".format(gamma))
+            textwriter("GAMMA = {}: InputError".format(gamma))
 
     if trigger_id == "ID_IMP_RL.value":
         if rl != "" and rl != None:
@@ -193,7 +195,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             ML_P = ML_P_Update(ML_dB)
         except:
             print("Return Loss = {}: InputError".format(rl))
-            TextWriter("Return Loss = {}: InputError".format(rl))
+            textwriter("Return Loss = {}: InputError".format(rl))
 
     if trigger_id == "ID_IMP_ML_DB.value":
         if ml_dB != "" and ml_dB != None:
@@ -210,7 +212,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             ML_P = ML_P_Update(ML_dB)
         except:
             print("Matching Loss = {}: InputError".format(ml_dB))
-            TextWriter("Matching Loss = {}: InputError".format(ml_dB))
+            textwriter("Matching Loss = {}: InputError".format(ml_dB))
 
     if trigger_id == "ID_IMP_ML_PC.value":
         if ml_p != "" and ml_p != None:
@@ -226,7 +228,7 @@ def IMP_update(rsource,rload,vswr,gamma,rl,ml_dB,ml_p,Zo):
             RL = RL_Update(GAMMA)
         except:
             print("Matching Loss = {}: InputError".format(ml_dB))
-            TextWriter("Matching Loss = {}: InputError".format(ml_dB))
+            textwriter("Matching Loss = {}: InputError".format(ml_dB))
 
 
     try:
@@ -345,7 +347,7 @@ def ImageFileOpenner(uploaded_filenames, uploaded_file_contents):
 
         elapstedtime = time.time() - starttime
         print("Image File was loaded in {:.3}s".format(elapstedtime))
-        TextWriter("Image File was loaded in {:.3}s".format(elapstedtime))
+        textwriter("Image File was loaded in {:.3}s".format(elapstedtime))
 
     if uploaded_filenames != None:
         return ["File = "+uploaded_filenames[0]]
@@ -373,6 +375,9 @@ def Converter_page(DataAnalyzer_Tabselection,pathname):
 
     elif DataAnalyzer_Tabselection == 'ResonantFrequency':
         return Converter_ResonantFrequency.create_layout(app)
+
+    elif DataAnalyzer_Tabselection == 'PCB Pattern':
+        return Converter_PCB_Pattern_Impedance.create_layout(app)
 
     elif DataAnalyzer_Tabselection == 'Unit':
         RunningUnitConversion = Run_UnitConversion()
@@ -406,7 +411,7 @@ def Conversion_Name_update(Category,From, To):
     trigger_id = dash.callback_context.triggered[0]["prop_id"]
     if RunningUnitConversion == 0:
         print("Conversion List of To Update")
-        TextWriter("Conversion List of To Update")
+        textwriter("Conversion List of To Update")
 
     if trigger_id ==  "DD_UnitConversion_Category.value":
         RunningUnitConversion.FromList(Category=Category, To=To)
@@ -610,9 +615,371 @@ def RESONANT_update(resonant_freq,freq_unit,Chipsize):
     global RESO_FREQ, FREQ_UNIT, RunningResonantFrequency
     if RunningResonantFrequency == 0:
         print("Resonant Frequency Finder Mode")
-        TextWriter("Resonant Frequency Finder Mode")
+        textwriter("Resonant Frequency Finder Mode")
     ResonatFrequencyInstance = Run_ResonantFrequency()
 
     NewGraph = ResonatFrequencyInstance.FindingResonant(ResonantFrequency=resonant_freq, ChipInductance=Chipsize,Resonant_Frequency_Unit=freq_unit)
 
     return [NewGraph]
+
+@app.callback(
+    [Output(component_id="ID_PCB_Pattern_Graph",component_property="children"),
+     Output(component_id="ID_PCB_Pattern_Formula",component_property="children"),
+     Output(component_id='ID_PCB_Param_3_Name', component_property="children"),
+     Output(component_id='ID_PCB_Param_4_Name', component_property="children"),
+     Output(component_id='ID_PCB_Param_5_Name', component_property="children"),
+     ],
+    [Input(component_id='Variation_tabs-selection', component_property='value'),
+     ]
+)
+def PCB_Pattern_update(PCB_Pattern_Tab_Selection):
+
+    if PCB_Pattern_Tab_Selection == "Microstrip":
+        Microstrip_path = "Converter/assets/ImageData/Microstrip-2.png"
+        Microstrip_image = base64.b64encode(open(Microstrip_path, "rb").read()).decode()
+
+        Graph = html.Img(src=f"data:image/png;base64,{Microstrip_image}", style={'width': '100%', 'height': 'auto'})
+        Formula = html.Div([
+            dcc.Markdown(r'''
+                $$ 
+                \large
+                \begin{aligned}
+                    \epsilon_{e} &=
+                    \left\{
+                    \begin{array}{ll}
+                        \frac{\epsilon_{r}+1}{2} + \frac{\epsilon_{r}-1}{2} 
+                        \biggl[ \frac{1}{\sqrt{1+12(\frac{h}{W})}} +0.4(1-\frac{W}{h})^{2} \biggr] & ( W < h) \\[10pt]
+                        \frac{\epsilon_{r}+1}{2} + \biggl[ \frac{\epsilon_{r}-1}{2 \sqrt{1+12 (\frac{h}{W})}} \biggr] & ( W > h) 
+                    \end{array}
+                    \right. \\[15pt]
+                    Z_{o} &=
+                    \left\{
+                    \begin{array}{ll}
+                        \frac{60}{\sqrt{\epsilon_{e}}} \ln \left( 8 \frac{h}{W} + 0.25 \frac{W}{h} \right)  & ( W < h) \\[10pt]
+                        \frac{120\pi}{\sqrt{\epsilon_{e}} \left[ \frac{W}{h} + 1.393 + \frac{2}{3} \ln \left( \frac{W}{h} + 1.444 \right) \right]} & ( W > h ) \\[10pt]
+                    \end{array}
+                    \right.
+                \end{aligned}
+                $$
+                ''',mathjax=True)
+        ])
+        Param3= "Height (h)"
+        Param4= html.Pre("           ")
+        Param5= html.Pre("           ")
+
+
+    elif PCB_Pattern_Tab_Selection == "Stripline":
+        Stripline_path = "Converter/assets/ImageData/Stripline-2.png"
+        Stripline_image = base64.b64encode(open(Stripline_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Stripline_image}", style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+                $$ 
+                \large
+                Z_o = \frac{60}{\sqrt{\varepsilon_r}} \times \ln \left( \frac{1.9(2h + t)}{(0.8w + t)} \right)
+                $$
+                ''',mathjax=True)
+        ])
+        Param3= "Height (h)"
+        Param4= html.Pre("           ")
+        Param5= html.Pre("           ")
+
+
+
+    elif PCB_Pattern_Tab_Selection == "Asymmetric Stripline":
+        Asymmetric_Stripline_path = "Converter/assets/ImageData/Asymmetric Stripline-2.png"
+        Asymmetric_Stripline_image = base64.b64encode(open(Asymmetric_Stripline_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Asymmetric_Stripline_image}", style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+                $$ 
+                \large
+                Z_o = \frac{80}{\sqrt{\varepsilon_r}} \times \ln \left( \frac{1.9(2h_a + t)}{(0.8w + t)} \right) \times \left( 1 - \frac{h_a}{4h_b} \right)
+                $$
+                ''',mathjax=True)
+        ])
+        Param3 = "Height (ha)"
+        Param4 = "Height (hb)"
+        Param5= html.Pre("           ")
+
+
+    elif PCB_Pattern_Tab_Selection == "Embedded Microstrip":
+        Embedded_Microstrip_path = "Converter/assets/ImageData/Embedded Microstrip-2.png"
+        Embedded_Microstrip_image = base64.b64encode(open(Embedded_Microstrip_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Embedded_Microstrip_image}", style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+               $$ 
+               \large
+               Z_o = \frac{60}{\sqrt{\varepsilon_{rp}}} \times \ln \left( \frac{5.98h_{p}}{0.8w + t} \right)
+               $$
+
+               $$ 
+               \large
+               \varepsilon_{rp} = \varepsilon_{r} \left[ 1 - \exp \left( -1.55 \frac{h}{h_{p}} \right) \right]
+               $$ 
+               ''', mathjax=True)
+        ])
+        Param3 = "Height (h)"
+        Param4 = "Height (hp)"
+        Param5= html.Pre("           ")
+
+
+    elif PCB_Pattern_Tab_Selection == "Edge Coupled Microstrip":
+        Edge_Coupled_Microstrip_path = "Converter/assets/ImageData/Edge Coupled Microstrip-2.png"
+        Edge_Coupled_Microstrip_image = base64.b64encode(open(Edge_Coupled_Microstrip_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Edge_Coupled_Microstrip_image}", style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+                       $$ 
+                       \large
+                       Z_d = \frac{174}{\sqrt{\varepsilon_r} + 1.41} \times \ln \left( \frac{5.98h}{0.8w + t} \right) \times \left[ 1 - 0.48 \exp \left( -0.96 \frac{s}{h} \right) \right]
+                       $$
+                       ''', mathjax=True)
+        ])
+        Param3 = "Height (h)"
+        Param4 = "Gap (S)"
+        Param5= html.Pre("           ")
+
+    elif PCB_Pattern_Tab_Selection == "Edge Coupled Stripline":
+        Edge_Coupled_Stripline_path = "Converter/assets/ImageData/Edge Coupled Stripline-2.png"
+        Edge_Coupled_Stripline_image = base64.b64encode(open(Edge_Coupled_Stripline_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Edge_Coupled_Stripline_image}", style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+               $$ 
+               \large
+               Z_o = \frac{60}{\sqrt{\varepsilon_r}} \times \ln \left( \frac{1.9(2h + t)}{(0.8w + t)} \right)
+               $$
+
+               $$ 
+               \large
+               Z_d = 2Z_o \left[ 1 - 0.347 \exp \left( -\frac{2.9s}{2h + t} \right) \right]
+               $$ 
+               ''', mathjax=True)
+        ])
+        Param3 = "Height (h)"
+        Param4 = "Gap (S)"
+        Param5 = html.Pre("           ")
+
+
+    elif PCB_Pattern_Tab_Selection == "Broadside Coupled Stripline":
+        Broadside_Coupled_Stripline_path = "Converter/assets/ImageData/Broadside Coupled Stripline-2.png"
+        Broadside_Coupled_Stripline_image = base64.b64encode(open(Broadside_Coupled_Stripline_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Broadside_Coupled_Stripline_image}", style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+               $$ 
+               \large
+               Z_o = \frac{80}{\sqrt{\varepsilon_r}} \times \ln \left( \frac{1.9(2h_p + t)}{(0.8w + t)} \right) \times \left( 1 - \frac{h_p}{4(h_{t} + h_p + t)} \right)
+               $$
+               ''', mathjax=True)
+        ])
+        Param3 = "Height (hp)"
+        Param4 = "Height (ht)"
+        Param5= html.Pre("           ")
+
+    elif PCB_Pattern_Tab_Selection == "Coplanar Waveguide With Ground":
+        Coplanar_Waveguide_With_Ground_path = "Converter/assets/ImageData/Coplanar Waveguide With Ground-2.png"
+        Coplanar_Waveguide_With_Ground_image = base64.b64encode(open(Coplanar_Waveguide_With_Ground_path, "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Coplanar_Waveguide_With_Ground_image}", style={'width': '100%', 'height': 'auto'})
+
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+                $$
+                \large
+                Z_0 = \frac{60\pi}{\sqrt{\varepsilon_{\mathrm{eff}}}} \cdot \left( \frac{1}{\dfrac{K(k)}{K(k')} + \dfrac{K(k_1)}{K(k_1')}} \right)
+                $$
+                
+                $$
+                \large
+                k = \frac{W}{W + 2s}, \quad
+                k' = \sqrt{1 - k^2}
+                $$
+                
+                $$
+                \large
+                k_1 = \frac{\tanh\left( \dfrac{\pi W}{4h} \right)}{\tanh\left( \dfrac{\pi(W + 2s)}{4h} \right)}, \quad
+                k_1' = \sqrt{1 - k_1^2}
+                $$
+                
+                $$
+                \large
+                \varepsilon_{\mathrm{eff}} = \frac{1 + \varepsilon_r \cdot \dfrac{K(k')}{K(k)} \cdot \dfrac{K(k_1)}{K(k_1')}}{1 + \dfrac{K(k')}{K(k)} \cdot \dfrac{K(k_1)}{K(k_1')}}
+                $$
+                ''', mathjax=True)
+        ])
+        Param3 = "Gap (S)"
+        Param4 = "Height (h)"
+        Param5= html.Pre("           ")
+
+    elif PCB_Pattern_Tab_Selection == "Asymmetric Coplanar Waveguide":
+        Asymmetric_Coplanar_Waveguide_path = "Converter/assets/ImageData/Asymmetric CPW-2.png"
+        Asymmetric_Coplanar_Waveguide_image = base64.b64encode(
+            open(Asymmetric_Coplanar_Waveguide_path , "rb").read()).decode()
+        Graph = html.Img(src=f"data:image/png;base64,{Asymmetric_Coplanar_Waveguide_image}",
+                         style={'width': '100%', 'height': 'auto'})
+
+        Formula = html.Div([
+            dcc.Markdown(r'''
+            $$
+            \large
+            Z_0 = \frac{60\pi}{\sqrt{\varepsilon_{\mathrm{eff}}}} \cdot \left( \frac{1}{\dfrac{K(k)}{K(k')} + \dfrac{K(k_1)}{K(k_1')}} \right)
+            $$
+
+            $$
+            \large
+            k = \frac{W}{W + 2s}, \quad
+            k' = \sqrt{1 - k^2}
+            $$
+
+            $$
+            \large
+            k_1 = \frac{\tanh\left( \dfrac{\pi W}{4 h_{\text{eff}}} \right)}{\tanh\left( \dfrac{\pi(W + 2s)}{4 h_{\text{eff}}} \right)}, \quad
+            k_1' = \sqrt{1 - k_1^2}
+            $$
+
+            $$
+            \large
+            h_{\text{eff}} = \frac{2 h_a h_b}{h_a + h_b}
+            $$
+
+            $$
+            \large
+            \varepsilon_{\mathrm{eff}} =
+            \frac{1 + \varepsilon_r \cdot \dfrac{K(k')}{K(k)} \cdot \dfrac{K(k_1)}{K(k_1')}}{1 + \dfrac{K(k')}{K(k)} \cdot \dfrac{K(k_1)}{K(k_1')}}
+            $$
+            ''', mathjax=True)
+        ])
+        Param3 = "Gap (S)"
+        Param4 = "Height (ha)"
+        Param5 = "Height (hb)"
+
+    return [Graph, Formula, Param3, Param4, Param5]
+
+@app.callback(
+    [Output(component_id="ID_PCB_Param_1_Input",component_property="value"),
+     ],
+    [Input(component_id='ID_PCB_Material_List', component_property='value'),
+     ]
+)
+def PCB_DirectConstant_update(ListInput):
+    return [ListInput]
+
+@app.callback(
+    [Output(component_id="ID_PCB_Graph",component_property="figure"),
+     ],
+    [Input(component_id='Variation_tabs-selection', component_property='value'),
+     Input(component_id='ID_PCB_Param_0_MIN', component_property='value'),
+     Input(component_id='ID_PCB_Param_0_MAX', component_property='value'),
+     Input(component_id="ID_Param_0_unit_selector", component_property='value'),
+     Input(component_id='ID_PCB_Param_1_Input', component_property='value'),
+     Input(component_id='ID_PCB_Param_2', component_property='value'),
+     Input(component_id="ID_Param_2_unit_selector", component_property='value'),
+     Input(component_id='ID_PCB_Param_3', component_property='value'),
+     Input(component_id="ID_Param_3_unit_selector", component_property='value'),
+     Input(component_id='ID_PCB_Param_4', component_property='value'),
+     Input(component_id="ID_Param_4_unit_selector", component_property='value'),
+     Input(component_id='ID_PCB_Param_5', component_property='value'),
+     Input(component_id="ID_Param_5_unit_selector", component_property='value'),
+     ]
+)
+def PCB_Width_vs_Impedance_Calculation(MODE, Width_MIN,Width_MAX,Width_Unit,Param1,Param2,Param2_Unit,Param3,Param3_Unit,Param4,Param4_Unit,Param5,Param5_Unit,):
+    if Width_MIN != "" and Width_MAX != "" and Param1 != None and Param2 != None and Param3 != None:
+        width_min = float(Width_MIN) * 0.001 if Width_Unit == "mm" else 0.001 * 0.0254
+        width_max = float(Width_MAX) * 0.001 if Width_Unit == "mm" else 0.001 * 0.0254
+
+        param1 = float(Param1)
+
+        if Param2_Unit == "oz":
+            Param2_multiply = 0.0305e-4 / 8.96
+        elif Param2_Unit == "um":
+            Param2_multiply = 1e-6
+        elif Param2_Unit == "mm":
+            Param2_multiply = 0.001
+        elif Param2_Unit == "mil":
+            Param2_multiply = 0.001 * 0.0254
+
+        param2 = float(Param2) * Param2_multiply
+
+        if Param3_Unit == "um":
+            Param3_multiply = 1e-6
+        elif Param3_Unit == "mm":
+            Param3_multiply = 0.001
+        elif Param3_Unit == "mil":
+            Param3_multiply = 0.001 * 0.0254
+
+        try:
+            param3 = float(Param3) * Param3_multiply
+        except:
+            param3 = 0
+
+
+
+        if (MODE == "Asymmetric Stripline"
+                or MODE == "Embedded Microstrip"
+                or MODE == "Edge Coupled Microstrip"
+                or MODE == "Edge Coupled Stripline"
+                or MODE == "Broadside Coupled Stripline"
+                or MODE == "Coplanar Waveguide With Ground"
+                or MODE == "Asymmetric Coplanar Waveguide"
+        ):
+            if Param4 != None and Param4 != '':
+                if Param4_Unit == "um":
+                    Param4_multiply = 1e-6
+                elif Param4_Unit == "mm":
+                    Param4_multiply = 0.001
+                elif Param4_Unit == "mil":
+                    Param4_multiply = 0.001 * 0.0254
+            try:
+                param4 = float(Param4) * Param4_multiply
+            except:
+                param4 = 0
+
+            if Param5 != None and Param5 != '':
+                if Param5_Unit == "um":
+                    Param5_multiply = 1e-6
+                elif Param5_Unit == "mm":
+                    Param5_multiply = 0.001
+                elif Param5_Unit == "mil":
+                    Param5_multiply = 0.001 * 0.0254
+
+            try:
+                param5 = float(Param5) * Param5_multiply
+            except:
+                param5 = 0
+
+            PCB_Width = PCB_Pattern_Width(Mode = MODE,
+                                        Width_min=width_min,
+                                        Width_max=width_max,
+                                        Param1=param1,
+                                        Param2=param2,
+                                        Param3=param3,
+                                        Param4=param4,
+                                        Param5=param5,
+                                        )
+            Graph_Data = PCB_Width.Graph_Gnerator()
+            return [Graph_Data]
+
+        if MODE == "Microstrip" or MODE == "Stripline":
+            PCB_Width = PCB_Pattern_Width(Mode = MODE,
+                                        Width_min=width_min,
+                                        Width_max=width_max,
+                                        Param1=param1,
+                                        Param2=param2,
+                                        Param3=param3,
+                                        Param4=0,
+                                        Param5=0,
+                                        )
+
+            Graph_Data = PCB_Width.Graph_Gnerator()
+            return [Graph_Data]
+
+    return[""]

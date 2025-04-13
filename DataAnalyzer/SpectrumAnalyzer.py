@@ -12,7 +12,7 @@ import time
 from scipy import fftpack
 from scipy.fft import fft
 from scipy.signal import blackman
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 
 ColurTable = {
@@ -34,7 +34,7 @@ class SpectrumAnalyzer:
 		self.UnitRow = UnitRow
 
 		print("Class:SpectrumAnalyzer was called")
-		TextWriter("Class:SpectrumAnalyzer was called")
+		textwriter("Class:SpectrumAnalyzer was called")
 		# Methods ------------------------------------
 		self.CSV_Read()
 		self.PlotlyEnable()
@@ -54,7 +54,7 @@ class SpectrumAnalyzer:
 	def CSV_Read(self):
 		starttime = time.time()
 		print("Data loading got started...")
-		TextWriter("Data loading got started...")
+		textwriter("Data loading got started...")
 
 		try:
 			HeaderCheck =pd.read_csv(self.Path,
@@ -215,7 +215,7 @@ class SpectrumAnalyzer:
 			self.Time_Data = np.array(self.Data_Plot.iloc[:,0])
 		elapstedtime = time.time() - starttime
 		print("CSV Read Completed in {:.3}s".format(elapstedtime))
-		TextWriter("CSV Read Completed in {:.3}s".format(elapstedtime))
+		textwriter("CSV Read Completed in {:.3}s".format(elapstedtime))
 
 	def PlotlyEnable(self):
 		starttime = time.time()
@@ -225,7 +225,7 @@ class SpectrumAnalyzer:
 		##############################
 		elapstedtime = time.time() - starttime
 		print("PlotlyEnable Completed in {:.3}s".format(elapstedtime))
-		TextWriter("PlotlyEnable Completed in {:.3}s".format(elapstedtime))
+		textwriter("PlotlyEnable Completed in {:.3}s".format(elapstedtime))
 
 	def AreaSplit(self):
 		starttime = time.time()
@@ -244,7 +244,7 @@ class SpectrumAnalyzer:
 		)
 		elapstedtime = time.time() - starttime
 		print("AreaSplit Completed in {:.3}s".format(elapstedtime))
-		TextWriter("AreaSplit Completed in {:.3}s".format(elapstedtime))
+		textwriter("AreaSplit Completed in {:.3}s".format(elapstedtime))
 
 	def TimeDomainParameters(self, row, col):
 			starttime = time.time()
@@ -386,7 +386,7 @@ class SpectrumAnalyzer:
 			# return self.Fig_Plotly
 			elapstedtime = time.time() - starttime
 			print("TimeDomainParameters Completed in {:.3}s".format(elapstedtime))
-			TextWriter("TimeDomainParameters Completed in {:.3}s".format(elapstedtime))
+			textwriter("TimeDomainParameters Completed in {:.3}s".format(elapstedtime))
 
 	def TimeDomainWaveForm(self,row,col):
 		starttime = time.time()
@@ -449,7 +449,7 @@ class SpectrumAnalyzer:
 
 			elapstedtime = time.time() - starttime
 			print("Preparing Data of Trace#{} Completed in {:.3}s".format(n+1, elapstedtime))
-			TextWriter("Preparing Data of Trace#{} Completed in {:.3}s".format(n+1, elapstedtime))
+			textwriter("Preparing Data of Trace#{} Completed in {:.3}s".format(n+1, elapstedtime))
 			starttime = time.time()
 
 		self.Fig_Plotly.update_yaxes(title_text="Amplitude [V]or[A]", row=row, col=col)
@@ -491,7 +491,7 @@ class SpectrumAnalyzer:
 		#return self.Fig_Plotly
 		elapstedtime = time.time() - starttime
 		print("TimeDomainWaveForm Completed in {:.3}s".format(elapstedtime))
-		TextWriter("TimeDomainWaveForm Completed in {:.3}s".format(elapstedtime))
+		textwriter("TimeDomainWaveForm Completed in {:.3}s".format(elapstedtime))
 
 	def calc_fft(self, data, samplerate):
 		spectrum = fftpack.fft(data)  # 信号のフーリエ変換
@@ -505,7 +505,7 @@ class SpectrumAnalyzer:
 	def FreqDomainWaveForm(self,row,col):
 		starttime = time.time()
 		print("FFT Calculation got started...")
-		TextWriter("FFT Calculation got started...")
+		textwriter("FFT Calculation got started...")
 		
 		# FFT Calculation ------------
 		Datapoint = len(self.Time_Data)
@@ -607,7 +607,7 @@ class SpectrumAnalyzer:
 									 	)
 		elapstedtime = time.time() - starttime
 		print("FreqDomainWaveForm Completed in {:.3}s".format(elapstedtime))
-		TextWriter("FreqDomainWaveForm Completed in {:.3}s".format(elapstedtime))
+		textwriter("FreqDomainWaveForm Completed in {:.3}s".format(elapstedtime))
 
 	def StyleUpdate(self):
 		self.Fig_Plotly.update_layout(

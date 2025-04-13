@@ -5,7 +5,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 import skrf as rf
 import plotly.io as pio
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 import warnings
 warnings.simplefilter(action='ignore', category=RuntimeWarning)
@@ -169,7 +169,7 @@ class smith:
 		self.S22_z = self.StoZ(self.S22)
 		elapstedtime = time.time() - starttime
 		print("S2P file Read Completed in {:.3}s".format(elapstedtime))
-		TextWriter("S2P file Read Completed in {:.3}s".format(elapstedtime))
+		textwriter("S2P file Read Completed in {:.3}s".format(elapstedtime))
 
 	def SparaTable(self, ViewPlot=False):
 		starttime = time.time()
@@ -328,19 +328,19 @@ class smith:
 			#### Slider Setting
 			self.SparaTable["layout"]["sliders"] = [self.SliderSetting()]
 			print("Slider Data Ready")
-			TextWriter("Slider Data Ready")
+			textwriter("Slider Data Ready")
 
 			####
 			# fill in most of layout template
 			self.SparaTable["layout"]["updatemenus"] = [self.ButtonSetting()]
 			print('Animation Button Ready')
-			TextWriter('Animation Button Ready')
+			textwriter('Animation Button Ready')
 
 			self.SparaTable.show()
 
 		elapstedtime = time.time() - starttime
 		print("Sparameter Table Preparation Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Sparameter Table Preparation Completed in {:.3}s".format(elapstedtime))
+		textwriter("Sparameter Table Preparation Completed in {:.3}s".format(elapstedtime))
 
 	def StabilityTable(self, ViewPlot=False):
 		starttime = time.time()
@@ -439,19 +439,19 @@ class smith:
 			#### Slider Setting
 			self.StabilityTable["layout"]["sliders"] = [self.SliderSetting()]
 			print("Slider Data Ready")
-			TextWriter("Slider Data Ready")
+			textwriter("Slider Data Ready")
 
 			####
 			# fill in most of layout template
 			self.StabilityTable["layout"]["updatemenus"] = [self.ButtonSetting()]
 			print('Animation Button Ready')
-			TextWriter('Animation Button Ready')
+			textwriter('Animation Button Ready')
 
 			self.StabilityTable.show()
 
 		elapstedtime = time.time() - starttime
 		print("Stability Factor Calculation Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Stability Factor Calculation Completed in {:.3}s".format(elapstedtime))
+		textwriter("Stability Factor Calculation Completed in {:.3}s".format(elapstedtime))
 
 	def GainTable(self, ViewPlot=True):
 		starttime = time.time()
@@ -571,19 +571,19 @@ class smith:
 			#### Slider Setting
 			self.GainTable["layout"]["sliders"] = [self.SliderSetting()]
 			print("Slider Data Ready")
-			TextWriter("Slider Data Ready")
+			textwriter("Slider Data Ready")
 
 			####
 			# fill in most of layout template
 			self.GainTable["layout"]["updatemenus"] = [self.ButtonSetting()]
 			print('Animation Button Ready')
-			TextWriter('Animation Button Ready')
+			textwriter('Animation Button Ready')
 
 			self.GainTable.show()
 
 		elapstedtime = time.time() - starttime
 		print("Ideal Gain Data Calculation Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Ideal Gain Data Calculation Completed in {:.3}s".format(elapstedtime))
+		textwriter("Ideal Gain Data Calculation Completed in {:.3}s".format(elapstedtime))
 
 	def SmithPlate(self):
 		Constantlist1 = [0,0.2,0.5,1,2,5]
@@ -739,7 +739,7 @@ class smith:
 
 		elapstedtime = time.time() - starttime
 		print("Smithchart Template Calculation Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Smithchart Template Calculation Completed in {:.3}s".format(elapstedtime))
+		textwriter("Smithchart Template Calculation Completed in {:.3}s".format(elapstedtime))
 
 	def AddData_2D(self,Data="",color="black",name="",FrameColor=""):#,title=""):
 		if type(Data) == complex or type(Data) == np.ndarray:
@@ -979,13 +979,13 @@ class smith:
 		]
 
 		print('AddSliderButton_2D Finish')
-		TextWriter('AddSliderButton_2D Finish')
+		textwriter('AddSliderButton_2D Finish')
 
 	def AddSlider(self, Label="",name=""):
 		# Slider Setting
 		self.Fig_2D["layout"]["sliders"] = [self.SliderSetting()]
 		print("AddSliderButton_2D Finished")
-		TextWriter("AddSliderButton_2D Finished")
+		textwriter("AddSliderButton_2D Finished")
 
 	def AddFrames_2D(self,Data="",color=""):
 		if type(Data) == complex or type(Data) == np.ndarray:
@@ -1024,7 +1024,7 @@ class smith:
 			]
 
 			print('Adding Frames Finished')
-			TextWriter('Adding Frames Finished')
+			textwriter('Adding Frames Finished')
 
 	def GenerateCircleList(self,Center,Radius,Resolution=100):
 		ReturnList = []
@@ -1102,7 +1102,7 @@ class smith:
 				) for n in range(len(self.Freq_Units))
 			]
 		print('Adding Stablitiy Frames Finished')
-		TextWriter('Adding Stablitiy Frames Finished')
+		textwriter('Adding Stablitiy Frames Finished')
 
 	def SmithChart_2D(self,Data='S11',Slider=True,TraceColor='black',FrameColor='black',Name='',Title='SmithChart_Plot',TitleSize=15,TitleColor='black'):
 		S_out = Data[1]
@@ -1174,7 +1174,7 @@ class smith:
 		self.Title_Change(title=Title, Mode=Mode, color=TitleColor, size=TitleSize)
 		elapstedtime = time.time() - starttime
 		print("Stability Circle Calculation Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Stability Circle Calculation Completed in {:.3}s".format(elapstedtime))
+		textwriter("Stability Circle Calculation Completed in {:.3}s".format(elapstedtime))
 
 	def RF_Check_2D(self, TraceColor='red', FrameColor='blue', Name='',	Title='SmithChart_Plot', TitleSize=15, TitleColor='black'):
 		print("--- Preparing S11 data ---")
@@ -1188,7 +1188,7 @@ class smith:
 		####################
 
 		print("--- Preparing S22 data ---")
-		TextWriter("--- Preparing S22 data ---")
+		textwriter("--- Preparing S22 data ---")
 
 		self.Stability(Data='S22',Mode="2D", Frame=False, Slider=False, TraceColor=TraceColor, FrameColor=FrameColor, Name=Name, Title='S22',
 					 TitleColor=TitleColor, TitleSize=TitleSize)
@@ -1250,12 +1250,12 @@ class smith:
 
 		elapstedtime = time.time() - starttime
 		print("Drawing Data Transfer Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Drawing Data Transfer Completed in {:.3}s".format(elapstedtime))
+		textwriter("Drawing Data Transfer Completed in {:.3}s".format(elapstedtime))
 
 		##Frame Over write #####################################
 
 		print("Preparing Frame Data...")
-		TextWriter("Preparing Frame Data...")
+		textwriter("Preparing Frame Data...")
 
 		starttime = time.time()
 		Operation = ["S11","S22"]
@@ -1493,7 +1493,7 @@ class smith:
 			]
 		elapstedtime = time.time() - starttime
 		print("Frame Data Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Frame Data Completed in {:.3}s".format(elapstedtime))
+		textwriter("Frame Data Completed in {:.3}s".format(elapstedtime))
 
 		#print("Frame Data Ready")
 
@@ -1549,7 +1549,7 @@ class smith:
 
 		elapstedtime = time.time() - starttime
 		print("Slider Data Completed in {:.3}s".format(elapstedtime))
-		TextWriter("Slider Data Completed in {:.3}s".format(elapstedtime))
+		textwriter("Slider Data Completed in {:.3}s".format(elapstedtime))
 
 		#print("Slider Data Ready")
 
@@ -1591,7 +1591,7 @@ class smith:
 		self.StabilityTable(ViewPlot=False)
 		self.GainTable(ViewPlot=False)
 		print("Subplot Data Ready")
-		TextWriter("Subplot Data Ready")
+		textwriter("Subplot Data Ready")
 
 		### Dummy Data import ###
 		for n in range(4):
@@ -1629,7 +1629,7 @@ class smith:
 		##Frame Over write #####################################
 
 		print("Preparing Frame Data...")
-		TextWriter("Preparing Frame Data...")
+		textwriter("Preparing Frame Data...")
 
 		Operation = ["S11","S22"]
 		for Data in Operation:
@@ -1865,7 +1865,7 @@ class smith:
 				) for n in range(len(self.Freq_Units))
 			]
 		print("Frame Data Ready")
-		TextWriter("Frame Data Ready")
+		textwriter("Frame Data Ready")
 
 		## Layout update
 		self.RF_Check_Smith_2D.update_layout(
@@ -1896,13 +1896,13 @@ class smith:
 		#### Slider Setting
 		self.RF_Check_Smith_2D["layout"]["sliders"] = [self.SliderSetting()]
 		print("Slider Data Ready")
-		TextWriter("Slider Data Ready")
+		textwriter("Slider Data Ready")
 
 		####
 		# fill in most of layout template
 		self.RF_Check_Smith_2D["layout"]["updatemenus"] = [self.ButtonSetting()]
 		print('Animation Button Ready')
-		TextWriter('Animation Button Ready')
+		textwriter('Animation Button Ready')
 
 		self.RF_Check_Smith_2D.show()
 

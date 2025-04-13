@@ -6,7 +6,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 import warnings
 warnings.simplefilter(action='ignore', category=UserWarning)
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 ColourTable = {
     0: "blue",
@@ -178,7 +178,7 @@ class Promira_Serial_Control:
 
         self.PlotlyGraph[Sheet].show()
         # print(fr"Waveform Viewer is Not Implemented")
-        # TextWriter(fr"Waveform Viewer is Not Implemented")
+        # textwriter(fr"Waveform Viewer is Not Implemented")
 
     def SPI_Add_X(self, Sheet, TickTime, Bit=0, AMP=0, Name="",SPI_MODE=0, CLKSLEEP=False):
         if not CLKSLEEP:
@@ -459,7 +459,7 @@ class Promira_Serial_Control:
 
         for Sequence in self.SequenceData[Sheet]:
             print(f"Making Seq#{Sequence} Wavefrom Data")
-            TextWriter(f"Making Seq#{Sequence} Wavefrom Data")
+            textwriter(f"Making Seq#{Sequence} Wavefrom Data")
 
             if self.SequenceData[Sheet][Sequence]['Mode'] == "I2C":
                 self.WaveData[Sheet]['LastTime'] = self.I2C_Waveform(SheetName=Sheet, SequenceNumber=Sequence, SequenceData=self.SequenceData[Sheet][Sequence])
@@ -467,7 +467,7 @@ class Promira_Serial_Control:
                 self.WaveData[Sheet]['LastTime'] = self.SPI_Waveform(SheetName=Sheet, SequenceNumber=Sequence, SequenceData=self.SequenceData[Sheet][Sequence])
 
         print(f"Data Re-Sampling for Sheet: {Sheet}")
-        TextWriter(f"Data Re-Sampling for Sheet: {Sheet}")
+        textwriter(f"Data Re-Sampling for Sheet: {Sheet}")
 
         self.WaveFormReSamling(Sheet=Sheet)
 
@@ -686,13 +686,13 @@ class Promira_Serial_Control:
                         SS = 0
                         text = "Error: At Sequence# " + str(Sequence_Number) + " SPI Chip Select is missing"
                         print(text)
-                        TextWriter(text)
+                        textwriter(text)
 
                     DATA = str(self.SequenceData[SheetName][Sequence_Number]['Sending Data']).replace(" ", "")
                     if DATA == "nan":
                         text = "Error: At Sequence# " + str(Sequence_Number) + " SPI Data is missing"
                         print(text)
-                        TextWriter(text)
+                        textwriter(text)
                         DATA = "00"
 
                     # GPIO Direction
@@ -788,7 +788,7 @@ class Promira_Serial_Control:
                     if I2C_ADD == "nan":
                         text = "Error: At Sequence# " + str(Sequence_Number) + " I2C Address is missing"
                         print(text)
-                        TextWriter(text)
+                        textwriter(text)
                         I2C_ADD = "00"
 
                     DATA = str(self.SequenceData[SheetName][Sequence_Number]['Sending Data']).replace(" ", "")
@@ -796,7 +796,7 @@ class Promira_Serial_Control:
                     if DATA == "nan":
                         text = "Error: At Sequence# " + str(Sequence_Number) + " I2C Data is missing"
                         print(text)
-                        TextWriter(text)
+                        textwriter(text)
                         DATA = "00"
 
 
@@ -842,7 +842,7 @@ class Promira_Serial_Control:
                     if I2C_ADD == "nan":
                         text = "Error: At Sequence# " + str(Sequence_Number) + " I2C Address is missing"
                         print(text)
-                        TextWriter(text)
+                        textwriter(text)
                         I2C_ADD = "00"
 
                     DATA = str(self.SequenceData[SheetName][Sequence_Number]['Sending Data']).replace(" ", "")
@@ -890,7 +890,7 @@ class Promira_Serial_Control:
             if Sheet == 'List':
                 break
             print(fr"Reading {Sheet} sheet")
-            TextWriter(fr"Reading {Sheet} sheet")
+            textwriter(fr"Reading {Sheet} sheet")
 
             self.GUI_Control(Sheet= Sheet)
 
@@ -900,13 +900,13 @@ class Promira_Serial_Control:
             self.XML_File_Writer(FileLocation=path_desktop + r'Promira_Batch_files',
                                     SheetName=Sheet)
             print(fr"XML File, {Sheet}.XML was created")
-            TextWriter(fr"XML File, {Sheet}.XML was created")
+            textwriter(fr"XML File, {Sheet}.XML was created")
 
             print(fr"")
-            TextWriter(fr"")
+            textwriter(fr"")
 
         print(fr"Process Completed")
-        TextWriter(fr"Process Completed")
+        textwriter(fr"Process Completed")
 
 if __name__ == "__main__":
     Path = r"C:\Users\IsaoYoneda\OneDrive - Photonic Inc\Python\AnalysisTool\DataAnalyzer\assets\Promira_Template.xlsx"

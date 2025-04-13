@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pathlib
 import plotly.graph_objects as go
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 ### OCR Library ###
 import pytesseract
@@ -197,7 +197,7 @@ class PicToGraph:
 
         elapstedtime = time.time() - starttime
         print("ThreshHoldFinder Completed in {:.3}s".format(elapstedtime))
-        TextWriter("ThreshHoldFinder Completed in {:.3}s".format(elapstedtime))
+        textwriter("ThreshHoldFinder Completed in {:.3}s".format(elapstedtime))
         return [Max_Thresh, Max_FoundData]
 
     def LegendDetector(self,image=""):
@@ -207,7 +207,7 @@ class PicToGraph:
 
         elapstedtime = time.time() - starttime
         print("LegendDetector Completed in {:.3}s".format(elapstedtime))
-        TextWriter("LegendDetector Completed in {:.3}s".format(elapstedtime))
+        textwriter("LegendDetector Completed in {:.3}s".format(elapstedtime))
 
 if __name__ == "__main__":
     path = r"C:\Users\pekep\Desktop\ggplot2-color-ggplot2-color-logo-1.png"

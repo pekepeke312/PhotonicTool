@@ -13,23 +13,26 @@
 
 from app import *
 import webbrowser
+import pathlib
 import os
+from textwriter import textwriter
+from kill_server import kill_server
 
 path = str(pathlib.Path(__file__).parent.resolve()) + str('\\Top_Assets\\')
 path = r'{}'.format(path)
 
 try:
     os.remove(path + "Log.txt")
-except:
-    pass
+except (Exception,):
+    print(f"removing " + path + "Log.txt has error")
 
-TextWriter("", end = "")   # To create a blank textlog file
-os.system('cmd /c "net user administrator /active:yes"')    # To give a permission to administrator account about drag and drop
+textwriter("", end="")   # To create a blank textlog file
+# To give a permission to administrator account about drag and drop
+os.system('cmd /c "net user administrator /active:yes"')
 
 host = "http://127.0.0.1"
 port = "8888"
-kill_server(host = host, port = port)
+kill_server(host=host, port=port)
 webbrowser.open(host + ':' + port)
 
-app.run_server(port = 8888, debug = False)
-
+app.run_server(port=8888, debug=False,)

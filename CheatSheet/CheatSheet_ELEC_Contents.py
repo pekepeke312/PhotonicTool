@@ -32,8 +32,11 @@ def CheatSheet_tab_menu():
         [
             html.Div([
             dcc.Tabs(id='CheatSheet_ELEC_tabs_selection',
-                     value='Altium',
+                     value='Cable',
                      children=[
+                         dcc.Tab(label='Cable', value='Cable', style=tab_style,
+                                 selected_style=tab_selected_style),
+
                          dcc.Tab(label='Altium', value='Altium', style=tab_style,
                                  selected_style=tab_selected_style),
 
@@ -92,6 +95,8 @@ def CheatSheet_page(CheatSheet_Tabselection,pathname):
          return page_CS.create_layout(app, file=r"CheatSheet/assets/IC_Package.pdf")
     elif CheatSheet_Tabselection == 'EMC_Formula':
          return page_CS.create_layout(app, file=r"CheatSheet/assets/EMC_Formula.pdf")
+    elif CheatSheet_Tabselection == 'Cable':
+         return page_CS.create_layout(app, file=r"CheatSheet/assets/Cable.pdf")
     else:
         return html.Div("not yet")
 

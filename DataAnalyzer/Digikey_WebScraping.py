@@ -1,11 +1,14 @@
 import time
-import pyautogui
+#import pyautogui
 import ctypes
+import pathlib
 
 from selenium import webdriver
+from selenium.webdriver.edge import service
+# import webbrowser
 from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 
 class Digikey_WebScraping():
@@ -21,16 +24,29 @@ class Digikey_WebScraping():
 
     def initial(self):
 #       self.chrome = webdriver.Chrome(ChromeDriverManager().install())
-        options = webdriver.ChromeOptions()
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument("--disable-extensions")
-        options.add_experimental_option('useAutomationExtension', False)
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        options.add_experimental_option("detach",True)
+#         options = webdriver.ChromeOptions()
+#         options.add_argument('--disable-blink-features=AutomationControlled')
+#         options.add_argument("--disable-extensions")
+#         options.add_experimental_option('useAutomationExtension', False)
+#         options.add_experimental_option("excludeSwitches", ["enable-automation"])
+#         options.add_experimental_option('excludeSwitches', ['enable-logging'])
+#         options.add_experimental_option("detach",True)
+#
+#
+#         self.chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 
-        self.chrome = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        # Microsoft Edge Version
+        edgeOption = webdriver.EdgeOptions()
+        edgeOption.use_chromium = True
+        edgeOption.add_argument("start-maximized")
+        edgeOption.binary_location = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+
+        path = str(pathlib.Path(__file__).parent.resolve())
+        driveraddress = path + r'\assets\Edge\edgedriver_win64\msedgedriver.exe'
+        s = service.Service(driveraddress)
+        self.edge = webdriver.Edge(service=s, options=edgeOption)
+
 
     def BotDetectorHandler(self):
         Button_lotions = self.chrome.find_element_by_xpath("/html/body/div/div/div[2]").rect
@@ -40,14 +56,14 @@ class Digikey_WebScraping():
                           int(Button_lotions['y'] + Button_lotions['height'] * 2) * scaleFactor]
         BotText = "Click Position Search..."
         print(BotText)
-        TextWriter(BotText)
+        textwriter(BotText)
 
         click_element = self.chrome.find_element_by_xpath('/html/body/div/div/div[2]')
         time.sleep(1)
 
         BotText = "Mouse Button Holding..."
         print(BotText)
-        TextWriter(BotText)
+        textwriter(BotText)
 
         ActionChains(self.chrome).click_and_hold(click_element).perform()
         time.sleep(5)
@@ -68,7 +84,7 @@ class Digikey_WebScraping():
 
         # while(1):
         #     print(pyautogui.position())
-        #     TextWriter(pyautogui.position())
+        #     textwriter(pyautogui.position())
 
 
 
@@ -77,7 +93,8 @@ class Digikey_WebScraping():
         Digikey_URL = "https://www.digikey.ca/en/products?KeyWords="
         Search_URL = Digikey_URL + self.TargetPN
 
-        self.chrome.get(Search_URL)
+        # self.chrome.get(Search_URL)
+        self.edge.get(Search_URL)
 
         ### Ctrl + Shift + 'I' makes debug mode in Chrome
 
@@ -85,7 +102,7 @@ class Digikey_WebScraping():
             if "At DigiKey," in  self.chrome.find_element_by_xpath('/html/body/div/div/div[1]').text:
                 BotText = "\nBot Detection Program appeared..."
                 print(BotText)
-                TextWriter(BotText)
+                textwriter(BotText)
                 self.BotDetectorHandler()
         except:
             pass
@@ -98,11 +115,13 @@ class Digikey_WebScraping():
                 First_PartNumber = self.chrome.find_element_by_xpath('/html/body/div[2]/main/section/div[2]/div[2]/div/div[1]/table/tbody/tr[1]/td[2]/div/div[3]/a[1]')
                 #aTag = First_PartNumber.find_element_by_tag_name("a")
                 url = First_PartNumber.get_attribute("href")
-                self.chrome.get(url)
+                # self.chrome.get(url)
+                self.edge.get(url)
         except:
             pass
 
-        ParameterRow = self.chrome.find_elements_by_tag_name("tr")
+        # ParameterRow = self.chrome.find_elements_by_tag_name("tr")
+        ParameterRow = self.edge.find_elements_by_tag_name("tr")
         self.PartInfo = {}
         for param in ParameterRow:
 #            idx_space = param.text.find(' ')
@@ -126,6 +145,8 @@ class Digikey_WebScraping():
         #### Getting DigiKey Qty ###
         try:
             Qty_text = self.chrome.find_element_by_xpath('/html/body/div[2]/div/main/div/div[1]/div[2]/div/div/div/div[1]/div').text
+            Qty_text = self.edge.find_element_by_xpath(
+                '/html/body/div[2]/div/main/div/div[1]/div[2]/div/div/div/div[1]/div').text
             return Qty_text
         except:
             return ""

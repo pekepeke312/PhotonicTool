@@ -1,7 +1,8 @@
-import os
+# import os
 import pathlib
 
-def TextWriter(*objects, sep=' ', end='\n',flush=False):
+
+def textwriter(*objects, sep=' ', end='\n',flush=False):
     Toppath = str(pathlib.Path(__file__).parent.resolve())
     path = Toppath + str('\\Top_Assets\\')
     path = r'{}'.format(path)
@@ -21,5 +22,5 @@ def TextWriter(*objects, sep=' ', end='\n',flush=False):
 
 if __name__ == "__main__":
     Text = "Sample {}".format(123)
-    TextWriter(Text)
+    textwriter(Text)
     print(Text)

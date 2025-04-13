@@ -15,7 +15,7 @@ import pathlib
 
 SCRAPING_TIME_MARGIN = 5
 
-from TextWriter import TextWriter
+from textwriter import textwriter
 if __name__ != "__main__":
     from .Digikey_WebScraping import Digikey_WebScraping
 else:
@@ -107,19 +107,19 @@ class API_Mouser():
         elapstedtime = time.time() - starttime
 
         print("BOM Checked in {:.3}s".format(elapstedtime))
-        TextWriter("BOM Checked in {:.3}s".format(elapstedtime))
+        textwriter("BOM Checked in {:.3}s".format(elapstedtime))
 
         if elapstedtime < SCRAPING_TIME_MARGIN:
             Additonal_Sleep_Time = SCRAPING_TIME_MARGIN - elapstedtime
             time.sleep(Additonal_Sleep_Time)
             print("Operation was too fast; Sleeping for {:.3}s".format(Additonal_Sleep_Time))
-            TextWriter("Operation was too fast; Sleeping for {:.3}s".format(Additonal_Sleep_Time))
+            textwriter("Operation was too fast; Sleeping for {:.3}s".format(Additonal_Sleep_Time))
 
     def InternalDatabaseLoader(self):
         starttime = time.time()
         text = "--- Loading Photonic Part Numbers from Perforce Database"
         print(text)
-        TextWriter(text)
+        textwriter(text)
 
         PartSearch = PartSearchTool()
         InternalDatabase = PartSearch.DatabaseLoader(Path=PartInfoDatabaseAddress)
@@ -142,7 +142,7 @@ class API_Mouser():
                                 ExcelRaw[Sheet].values[n, k] == "Manufacturer PN"):
                             Column_ManufacturerPN = k
                     except:
-                        Column_ManufacturerPN = nan
+                        Column_ManufacturerPN = 'nan'
 
                     if ExcelRaw[Sheet].values[n, k] == ("7-digit PN"):
                         Column_PartNumber = k
@@ -172,7 +172,7 @@ class API_Mouser():
         elapstedtime = time.time() - starttime
         text = 'Loading the all Parts in {:.3}s'.format(elapstedtime)
         print(text)
-        TextWriter(text)
+        textwriter(text)
 
     def Get_Photonic_PartNumber(self, MfrPN = ""):
         Photonic_PN = str(self.DF_PartDataBase[self.DF_PartDataBase["Manufacturer PN"] == MfrPN]["PartNumber"].values[0])
@@ -201,7 +201,7 @@ class API_Mouser():
 
         if response.status_code == 429 or response.status_code == 403:
             print("too many request! Need to wait")
-            TextWriter("too many request! Need to wait")
+            textwriter("too many request! Need to wait")
             self.PartInfo = {}
 
         elif response.status_code == 200:
@@ -227,7 +227,7 @@ class API_Mouser():
         for PNn in range(len(list(PNList))):
             # if PNn%1 == 0:
             #     print("Break Time for API System in 1.5sec...")
-            #     TextWriter("Break Time for API System in 1.5sec...")
+            #     textwriter("Break Time for API System in 1.5sec...")
             #     time.sleep(1.5)
             starttime = time.time()
             self.PartInfo = {}
@@ -305,7 +305,7 @@ class API_Mouser():
 
             elapstedtime = time.time() - starttime
             print("No.{}/{}: Data of {} Derived in {:.3}s".format(PNn+1,len(list(PNList)), list(PNList)[PNn], elapstedtime))
-            TextWriter("No.{}/{}: Data of {} Derived in {:.3}s".format(PNn+1,len(list(PNList)), list(PNList)[PNn], elapstedtime))
+            textwriter("No.{}/{}: Data of {} Derived in {:.3}s".format(PNn+1,len(list(PNList)), list(PNList)[PNn], elapstedtime))
         self.Result_DataFrame = Result_DF
 
     def ParameterUpdate(self):
@@ -575,7 +575,7 @@ class API_Mouser():
 
     def WritingExcel(self):
         print("\nMaking Result Sheet at Desktop...")
-        TextWriter("\nMaking Result Sheet at Desktop...")
+        textwriter("\nMaking Result Sheet at Desktop...")
 
         try:
             path = os.environ['DataAnalyzerPath'] + str('\\AnalysisTool\\DataAnalyzer\\assets\\')

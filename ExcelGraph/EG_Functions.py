@@ -14,7 +14,7 @@ import pathlib
 import os
 import base64
 import codecs
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 ColourTable = {
     0: 'blue',
@@ -331,7 +331,7 @@ class PlotlyGraph:
         #self.XY_Graph["layout"]["sliders"] = [self.SliderSetting(FrameData=self.x1)]
         elapstedtime = time.time() - starttime
         print("Scatter Graph Data was generated in {:.3}s".format(elapstedtime))
-        TextWriter("Scatter Graph Data was generated in {:.3}s".format(elapstedtime))
+        textwriter("Scatter Graph Data was generated in {:.3}s".format(elapstedtime))
 
     def DataLengthCounter(self,data):
         Count = 0
@@ -400,7 +400,7 @@ class PlotlyGraph:
 
         elapstedtime = time.time() - starttime
         print("CPK Data Table was generated in {:.3}s".format(elapstedtime))
-        TextWriter("CPK Data Table was generated in {:.3}s".format(elapstedtime))
+        textwriter("CPK Data Table was generated in {:.3}s".format(elapstedtime))
 
     def CPKCalculator_2D(self):
         starttime = time.time()
@@ -466,7 +466,7 @@ class PlotlyGraph:
 
         elapstedtime = time.time() - starttime
         print("CPK Data Table was generated in {:.3}s".format(elapstedtime))
-        TextWriter("CPK Data Table was generated in {:.3}s".format(elapstedtime))
+        textwriter("CPK Data Table was generated in {:.3}s".format(elapstedtime))
 
     def HistogramGenerator(self):
         starttime = time.time()
@@ -737,7 +737,7 @@ class PlotlyGraph:
                 )
         elapstedtime = time.time() - starttime
         print("Histogram Graph Data was generated in {:.3}s".format(elapstedtime))
-        TextWriter("Histogram Graph Data was generated in {:.3}s".format(elapstedtime))
+        textwriter("Histogram Graph Data was generated in {:.3}s".format(elapstedtime))
 
     def CustomDataGenerator_2D(self,Bin1,Bin2,Data1,Data2,CDF1,CDF2,**kwargs):
         TempDict = {}
@@ -1165,7 +1165,7 @@ class PlotlyGraph:
         #print("Complete")
         elapstedtime = time.time() - starttime
         print("2D Histogram Data was generated in {:.3}s".format(elapstedtime))
-        TextWriter("2D Histogram Data was generated in {:.3}s".format(elapstedtime))
+        textwriter("2D Histogram Data was generated in {:.3}s".format(elapstedtime))
 
     def TableGenerator(self):
         TableContents_List = []
@@ -1555,7 +1555,7 @@ class ExcelGraph():
 
         elapstedtime = time.time() - starttime
         print("Function: GraphGenerate completed in {:.3}s".format(elapstedtime))
-        TextWriter("Function: GraphGenerate completed in {:.3}s".format(elapstedtime))
+        textwriter("Function: GraphGenerate completed in {:.3}s".format(elapstedtime))
 
     # def EG_save_file(self,name, content):
     #     """Decode and store a file uploaded with Plotly Dash."""
@@ -1705,7 +1705,7 @@ def ExcelFileOpenner(uploaded_filenames, uploaded_file_contents):
 
         elapstedtime = time.time() - starttime
         print("Excel File was loaded in {:.3}s".format(elapstedtime))
-        TextWriter("Excel File was loaded in {:.3}s".format(elapstedtime))
+        textwriter("Excel File was loaded in {:.3}s".format(elapstedtime))
 
     if uploaded_filenames != None:
         return ["File = "+uploaded_filenames[0]]
@@ -1744,7 +1744,7 @@ def EG_Graph_Generate(BT_Graph_Generate_Clicked,
     if type(RunningExcelGraph) != str and BT_GRAPH_GENERATE != BT_Graph_Generate_Clicked:
         BT_GRAPH_GENERATE = BT_Graph_Generate_Clicked
         print("-- 1D Histogram Mode was called --")
-        TextWriter("-- 1D Histogram Mode was called --")
+        textwriter("-- 1D Histogram Mode was called --")
         RunningExcelGraph.GraphGenerate(Mode=MODELIST[0],# "Histogram",
                                         x1_Data_Address=HT1D_DATA_X1,
                                         x1_Name_Address=HT1D_NAME_X1,
@@ -1803,7 +1803,7 @@ def EG_Graph_Generate(BT2D_Graph_Generate_Clicked,
     if type(RunningExcelGraph) != str and BT2D_GRAPH_GENERATE != BT2D_Graph_Generate_Clicked:
         BT2D_GRAPH_GENERATE = BT2D_Graph_Generate_Clicked
         print("-- 2D Histogram Mode was called --")
-        TextWriter("-- 2D Histogram Mode was called --")
+        textwriter("-- 2D Histogram Mode was called --")
         RunningExcelGraph.GraphGenerate(Mode=MODELIST[1], #"Histogram_2D",
                                         x1_Data_Address=HT2D_DATA_X1,
                                         x1_Name_Address=HT2D_NAME_X1,
@@ -1917,7 +1917,7 @@ def EG_Graph_Generate(SC_Graph_Generate_Clicked,
     if type(RunningExcelGraph) != str and SC_GRAPH_GENERATE != SC_Graph_Generate_Clicked:
         SC_GRAPH_GENERATE = SC_Graph_Generate_Clicked
         print("-- Scatter Graph Mode was called --")
-        TextWriter("-- Scatter Graph Mode was called --")
+        textwriter("-- Scatter Graph Mode was called --")
         RunningExcelGraph.GraphGenerate(Mode=MODELIST[2], #"Scatter Graph",
             x1_Data_Address=SC_DATA_X1, x2_Data_Address=SC_DATA_X2, x3_Data_Address=SC_DATA_X3, x4_Data_Address=SC_DATA_X4,
                                         x5_Data_Address=SC_DATA_X5, x6_Data_Address=SC_DATA_X6, x7_Data_Address=SC_DATA_X7,

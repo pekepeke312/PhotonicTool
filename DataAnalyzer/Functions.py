@@ -18,6 +18,7 @@ if __name__ != "__main__":
 
     from .SpectrumAnalyzer import *
     from .API_Mouser import *
+    from .Nexer_API import *
     from .smith import *
     from .Promira_Serial_Control import *
 
@@ -25,6 +26,7 @@ else:
     #from server import FILEPATH
     from SpectrumAnalyzer import *
     from API_Mouser import *
+    from Nexer_API import *
     #from server import app
     from smith import *
 
@@ -34,7 +36,7 @@ SPA = 0
 
 def Running_Promira_File_Converter(FileFull_Path):
     print("---Promira Serial Control Batch Creation Mode ---")
-    TextWriter("---Promira Serial Control Batch Creation Mode ---")
+    textwriter("---Promira Serial Control Batch Creation Mode ---")
     global Target_Path
     global Modification_Time
     global SPA
@@ -44,7 +46,7 @@ def Running_Promira_File_Converter(FileFull_Path):
 
 def Running_SpectrumAnalyzer(FileFull_Path):
     print("---Time Domain & Freq Domain Analysis Mode ---")
-    TextWriter("---Time Domain & Freq Domain Analysis Mode ---")
+    textwriter("---Time Domain & Freq Domain Analysis Mode ---")
     global Target_Path
     global SPA
     global Modification_Time
@@ -55,7 +57,7 @@ def Running_SpectrumAnalyzer(FileFull_Path):
 
 def Running_RFAnalyzer(FileFull_Path):
     print("---RF Parameter Analysis Mode ---")
-    TextWriter("---RF Parameter Analysis Mode ---")
+    textwriter("---RF Parameter Analysis Mode ---")
     global Target_Path
     global SPA
     global Modification_Time
@@ -66,7 +68,7 @@ def Running_RFAnalyzer(FileFull_Path):
 
 def Running_API_Mouser(FileFull_Path):
     print("---BOM Data Analysis Mode ---")
-    TextWriter("---BOM Data Analysis Mode ---")
+    textwriter("---BOM Data Analysis Mode ---")
     apikey=os.environ['MOUSER_API']
     global Target_Path
     global SPA
@@ -75,6 +77,17 @@ def Running_API_Mouser(FileFull_Path):
         Modification_Time = os.path.getmtime(FileFull_Path)
         Target_Path = FileFull_Path
         SPA = API_Mouser(APIKEY=apikey,PATH=Target_Path)
+
+def Running_API_Nexer(FileFull_Path):
+    print("---BOM Data Analysis Mode ---")
+    textwriter("---BOM Data Analysis Mode ---")
+    global Target_Path
+    global SPA
+    global Modification_Time
+    if Modification_Time != os.path.getmtime(FileFull_Path):
+        Modification_Time = os.path.getmtime(FileFull_Path)
+        Target_Path = FileFull_Path
+        SPA = Reader_from_Nexer(PATH=Target_Path)
 
 def save_file(name, content):
     """Decode and store a file uploaded with Plotly Dash."""
@@ -164,7 +177,8 @@ def Processing_File(uploaded_filenames, uploaded_file_contents):
         FileFullPath = FILEPATH + "\\" + uploaded_filenames[0]
         FileFullPath = r'{}'.format(FileFullPath)
         if ('BOM' in uploaded_filenames[0]):
-            Running_API_Mouser(FileFullPath)
+            # Running_API_Mouser(FileFullPath)
+            Running_API_Nexer(FileFullPath)
         elif ('promira' in uploaded_filenames[0].lower()):
             Running_Promira_File_Converter(FileFullPath)
             global SPA

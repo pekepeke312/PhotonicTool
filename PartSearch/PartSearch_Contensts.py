@@ -16,7 +16,7 @@ from PartSearch.PartSearch_Functions import *
 
 from server import app, server
 from kill_server import kill_server
-from TextWriter import *
+from textwriter import *
 
 ########################################################################
 tabs_styles = {

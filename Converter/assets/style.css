@@ -1,0 +1,15 @@
+/* dcc.Tabs 全体をカスタムラップ */
+.custom-tabs .tab-container {
+    display: flex;
+    flex-wrap: wrap;   /* 折り返しを許可 */
+    justify-content: flex-start;
+    gap: 6px;
+}
+
+/* 各タブを特定する */
+.custom-tabs .dash-tab {
+    flex: 1 0 48%;     /* 48% 幅で2列表示に近くする */
+    box-sizing: border-box;
+    text-align: center;
+    min-width: 180px;  /* タブの最小幅を確保 */
+}

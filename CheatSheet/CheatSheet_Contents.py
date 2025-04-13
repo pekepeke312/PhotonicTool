@@ -11,6 +11,7 @@ from CheatSheet import (
     CheatSheet_Python_Contents,
     CheatSheet_FPGA_Contents,
     CheatSheet_ELEC_Contents,
+    CheatSheet_Quantum_Contents,
 )
 
 from server import app
@@ -34,11 +35,12 @@ tab_selected_style = {
 }
 ##########################################################################
 
-def CheatSheet_tab_menu():
+
+def cheatsheet_tab_menu():
     menu = html.Div(
         [
             html.Div([
-                #html.Div(["Operation Log:"]),
+                # html.Div(["Operation Log:"]),
                 dcc.Interval(
                     id='interval1',
                     interval=1 * 1000,  # in milliseconds
@@ -57,9 +59,15 @@ def CheatSheet_tab_menu():
                 style={"border": "1px black solid"},
             ),
             dcc.Tabs(id='CheatSheet_tabs-selection',
-                     value='Git',
+                     value='Quantum',
                      children=[
+                         dcc.Tab(label='Quantum', value='Quantum', style=tab_style,
+                                 selected_style=tab_selected_style),
+
                          dcc.Tab(label='Git', value='Git', style=tab_style,
+                                 selected_style=tab_selected_style),
+
+                         dcc.Tab(label='P4V', value='perforce', style=tab_style,
                                  selected_style=tab_selected_style),
 
                          dcc.Tab(label='Electrical', value='Electrical', style=tab_style,
@@ -77,10 +85,13 @@ def CheatSheet_tab_menu():
                          dcc.Tab(label='Linux', value='Linux', style=tab_style,
                                  selected_style=tab_selected_style),
 
+                         dcc.Tab(label='docker', value='docker', style=tab_style,
+                                 selected_style=tab_selected_style),
+
                          dcc.Tab(label='Windows10', value='Windows10', style=tab_style,
                                  selected_style=tab_selected_style),
 
-                         dcc.Tab(label='Cheat Sheet Revision History', value='HistoryLog', style=tab_style,
+                         dcc.Tab(label='History', value='HistoryLog', style=tab_style,
                                  selected_style=tab_selected_style),
                      ],
                      style=tabs_styles,
@@ -91,10 +102,11 @@ def CheatSheet_tab_menu():
     )
     return menu
 
-def CheatSheet_layout(app):
+
+def cheatsheet_layout(app):
     return html.Div([
         # html.H5(["Select a Genre"]),
-        CheatSheet_tab_menu(),
+        cheatsheet_tab_menu(),
         html.Div([
             dcc.Location(id="CheatSheet_page_url",
                          refresh=False),
@@ -117,6 +129,10 @@ def CheatSheet_layout(app):
 def CheatSheet_page(CheatSheet_Tabselection,pathname):
     if CheatSheet_Tabselection == 'Git':     #Default Page
          return page_CS.create_layout(app, file=r"CheatSheet/assets/git.pdf")
+    elif CheatSheet_Tabselection == 'Quantum':
+         return CheatSheet_Quantum_Contents.CheatSheet_Quantum_layout(app)
+    elif CheatSheet_Tabselection == 'perforce':
+         return page_CS.create_layout(app, file=r"CheatSheet/assets/perforce.pdf")
     elif CheatSheet_Tabselection == 'Electrical':
          return CheatSheet_ELEC_Contents.CheatSheet_ELEC_layout(app)
     elif CheatSheet_Tabselection == 'Windows10':
@@ -127,6 +143,8 @@ def CheatSheet_page(CheatSheet_Tabselection,pathname):
          return CheatSheet_Python_Contents.CheatSheet_Python_layout(app)
     elif CheatSheet_Tabselection == 'Latex':
          return page_CS.create_layout(app, file=r"CheatSheet/assets/Latex.pdf")
+    elif CheatSheet_Tabselection == 'docker':
+         return page_CS.create_layout(app, file=r"CheatSheet/assets/docker.pdf")
     elif CheatSheet_Tabselection == 'Linux':
          return page_CS.create_layout(app, file=r"CheatSheet/assets/Linux.pdf")
     elif CheatSheet_Tabselection == 'HistoryLog':

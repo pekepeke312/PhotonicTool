@@ -12,7 +12,7 @@ from .assets import (
 
 from server import app, server
 from kill_server import kill_server
-from TextWriter import *
+from textwriter import *
 
 ########################################################################
 tabs_styles = {
@@ -44,6 +44,8 @@ def Converter_tab_menu():
                          dcc.Tab(label='Resonant Frequency', value='ResonantFrequency', style=tab_style,
                                  selected_style=tab_selected_style),
                          dcc.Tab(label='Impedance', value='Impedance', style=tab_style,
+                                 selected_style=tab_selected_style),
+                         dcc.Tab(label='PCB Pattern', value='PCB Pattern', style=tab_style,
                                  selected_style=tab_selected_style),
                          # dcc.Tab(label='Pic-to-Graph', value='Pic-to-Graph', style=tab_style,
                          #         selected_style=tab_selected_style),

@@ -1,4 +1,4 @@
-from TextWriter import *
+from textwriter import *
 import time
 import pandas as pd
 import numpy as np
@@ -42,13 +42,13 @@ class UnitConversion():
 		if len(LimitedList) > 1:
 			text = fr"Remaining Possible Conditions are {len(LimitedList)} cases"
 			print(text)
-			TextWriter(text)
+			textwriter(text)
 			self.GraphState = False
 			self.SelectedData = ""
 		else:
 			text = "Remaining Possible Condition is only 1 case"
 			print(text)
-			TextWriter(text)
+			textwriter(text)
 			self.SelectedData = LimitedList
 			self.GraphState = True
 			self.InputWidgetUpdate() ## Update GUI View
@@ -283,6 +283,10 @@ class UnitConversion():
 				)
 
 				self.Fig_2D.update_layout(
+					hovermode="x unified",
+				)
+
+				self.Fig_2D.update_layout(
 					xaxis_title=Data["From"].values[0],
 					yaxis_title=Data["To"].values[0],
 					autosize=True,
@@ -296,7 +300,7 @@ class UnitConversion():
 								text=self.SelectedData["Latex Formula"].values[0],
 								x = 0.5,
 								font = dict(
-									size = 24,
+									size = 36,
 									color = "black",
 								)
 							)
@@ -393,7 +397,7 @@ class UnitConversion():
 		starttime = time.time()
 		ReadAddress = Path
 		print("--- Loading Database File ---")
-		TextWriter("--- Loading Database File ---")
+		textwriter("--- Loading Database File ---")
 
 		try:
 			self.DataBase = pd.read_excel(ReadAddress)
@@ -433,7 +437,7 @@ class UnitConversion():
 		elapstedtime = time.time() - starttime
 		text = 'Loading the all address of Database files Completed in {:.3}s'.format(elapstedtime)
 		print(text)
-		TextWriter(text)
+		textwriter(text)
 
 
 	def CategoryList(self,To="", From="", Reset=False):

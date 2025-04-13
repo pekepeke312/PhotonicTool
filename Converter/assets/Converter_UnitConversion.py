@@ -269,7 +269,7 @@ def create_layout(app):
 						style={"display": "true",
 								'textAlign': 'center',
 							   # 'width': '95vw',
-							   # 'height': '100vh',
+							     'height': '65vh',
 								},
 						mathjax=True,
 					),

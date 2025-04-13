@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import re
 import pathlib
-from TextWriter import *
+from textwriter import *
 import plotly.graph_objects as go
 import time
 from math import nan, isnan
@@ -29,7 +29,7 @@ class PartSearchTool():
 		starttime = time.time()
 		ReadAddress = Path
 		print("--- Loading PartInformation File ---")
-		TextWriter("--- Loading PartInformation File ---")
+		textwriter("--- Loading PartInformation File ---")
 
 		try:
 			self.DataBaseAddress = pd.read_excel(ReadAddress)
@@ -49,18 +49,18 @@ class PartSearchTool():
 			except:
 				text = r'PartInfoDatabaseAddress needs to implement this computer setting'
 				print(text)
-				TextWriter(text)
+				textwriter(text)
 				raise Exception("PartInfoDatabaseAddress needs to implement this computer setting")
 
 
 		string = 'Loading from ' + str(self.DataBase["Address"]) + '" started'
 		print(string)
-		TextWriter(string)
+		textwriter(string)
 
 		elapstedtime = time.time() - starttime
 		text = 'Loading the all address of Database files Completed in {:.3}s'.format(elapstedtime)
 		print(text)
-		TextWriter(text)
+		textwriter(text)
 
 		return self.DataBase
 
@@ -115,7 +115,7 @@ class PartSearchTool():
 		elapstedtime = time.time() - starttime
 		text = 'Making Address files table Completed in {:.3}s'.format(elapstedtime)
 		print(text)
-		TextWriter(text)
+		textwriter(text)
 
 	def PartNumberFileLoader(self):
 		ExcelRaw = pd.read_excel(self.DataBase["Address"], sheet_name=None, header=None)
@@ -133,6 +133,7 @@ class PartSearchTool():
 
 		starttime = time.time()
 		for Sheet in L_Valid_Sheet_Names:
+			sheet_starttime = time.time()
 			for n in range(len(ExcelRaw[Sheet].values)):
 
 				for k in range(len(ExcelRaw[Sheet].values[n,:])):
@@ -224,6 +225,7 @@ class PartSearchTool():
 							Column_LibPCB = nan
 
 			for n in range(1,len(ExcelRaw[Sheet].values)):
+
 				try:
 					PartNumber = ExcelRaw[Sheet].values[n,Column_PartNumber]
 				except:
@@ -241,15 +243,15 @@ class PartSearchTool():
 				except:
 					ManufacturerPN = ""
 
-				try:
-					Supplier = ExcelRaw[Sheet].values[n,Column_Supplier]
-				except:
-					Supplier = ""
-
-				try:
-					SupplierPN = ExcelRaw[Sheet].values[n,Column_SupplierPN]
-				except:
-					SupplierPN = ""
+				# try:
+				# 	Supplier = ExcelRaw[Sheet].values[n,Column_Supplier]
+				# except:
+				# 	Supplier = ""
+				#
+				# try:
+				# 	SupplierPN = ExcelRaw[Sheet].values[n,Column_SupplierPN]
+				# except:
+				# 	SupplierPN = ""
 
 				try:
 					URL = ExcelRaw[Sheet].values[n,Column_URL]
@@ -342,12 +344,16 @@ class PartSearchTool():
 			Column_Temp = nan
 			Column_LibSCH = nan
 
+			sheet_elapstedtime = time.time() - sheet_starttime
+			text = "Loading {} items is Sheet {} completed in  {:.1f}ms".format(n, Sheet, sheet_elapstedtime * 1000)
+			print(text)
+			textwriter(text)
 
 
 		elapstedtime = time.time() - starttime
 		text = 'Loading  Completed in {:.3}s'.format(elapstedtime)
 		print(text)
-		TextWriter(text)
+		textwriter(text)
 
 		self.DF_PartDataBase =pd.DataFrame(self.PartNumberDatabase, dtype='str')
 		self.DF_PartDataBase.columns = ["ClassCode",
@@ -391,7 +397,7 @@ class PartSearchTool():
 	def Plotly_Table_Generator(self, SheetFilter=""):
 		viewtext = '--- Making Table, [Class Code = ' + str(SheetFilter) + '] ---'
 		print(viewtext)
-		TextWriter(viewtext)
+		textwriter(viewtext)
 
 		### Filter Process ###
 		if SheetFilter != '':

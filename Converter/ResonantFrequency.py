@@ -1,7 +1,7 @@
 import plotly.graph_objs as go
 import numpy as np
 import math
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 VERTICALRANGE = [np.log10(1e-3), np.log10(6.1e6)]
 
@@ -485,13 +485,13 @@ class ResonantFrequency:
     def FindingResonant(self, ResonantFrequency,Resonant_Frequency_Unit, ChipInductance):
         text = (f"Line added, Vertical Line: {ResonantFrequency} x {Resonant_Frequency_Unit} Hz, Slash Line: {ChipInductance} H")
         print(text)
-        TextWriter(text)
+        textwriter(text)
 
         [Cap, Unit] = self.CapaciantceCalculator(ResonantFrequency,Resonant_Frequency_Unit,ChipInductance)
 
         text2 = (f"Suitable Capacitance Value : {Cap} {Unit}F")
         print(text2)
-        TextWriter(text2)
+        textwriter(text2)
 
         GraphTemplate = self.Fig_2D
 

@@ -5,3 +5,4 @@
 7 May 2024: Added Python3 cheatsheet
 7 May 2024: Added Windows10 cheatsheet
 7 May 2024: Added Linux cheatsheet
+20 May 2024: Added Quantum Tab Menu

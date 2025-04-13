@@ -5,7 +5,7 @@ from typing import Union
 import time
 import math
 
-from TextWriter import TextWriter
+from textwriter import textwriter
 
 VSWR = GAMMA = RL = ML_dB = ML_P = RSource = RLoad = ''
 VSWR_ABS = GAMMA_ABS = ''
@@ -288,7 +288,7 @@ class smithchart:
 
         elapstedtime = time.time() - starttime
         # print("Making Smithchart Template Completed in {:.3}s".format(elapstedtime))
-        # TextWriter("Making Smithchart Template Completed in {:.3}s".format(elapstedtime))
+        # textwriter("Making Smithchart Template Completed in {:.3}s".format(elapstedtime))
 
     def AddData_2D(self,Data="",color="black",name="",FrameColor=""):#,title=""):
         if type(Data) == complex or type(Data) == np.ndarray:
@@ -458,7 +458,7 @@ class smithchart:
 
         elapstedtime = time.time() - starttime
         print("Making Smithchart Completed in {:.3}s".format(elapstedtime))
-        TextWriter("Making Smithchart Completed in {:.3}s".format(elapstedtime))
+        textwriter("Making Smithchart Completed in {:.3}s".format(elapstedtime))
 
 # if __name__ == "__main__":
 # 	SMITH = smith(path=path)
